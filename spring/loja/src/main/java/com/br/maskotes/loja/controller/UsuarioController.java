@@ -19,9 +19,15 @@ public class UsuarioController {
         @Autowired
         UsuarioService usuarioService;
 
+        
         @PostMapping
         public Usuario insert(@RequestBody Usuario user){
-            return usuarioService.create(user);
+            try {
+                 return usuarioService.create(user);
+            } catch (RuntimeException e) {
+                return null;
+            }
+           
         }
         @GetMapping
         public String getMethodName() {

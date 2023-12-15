@@ -28,8 +28,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario exist = usuarioRepository.findByLogin(user.getLogin());
         
         if(exist != null){
-            throw new Error("Usuario já existe");
+            throw new RuntimeException("usuario ja existe");
         }
+            
         user.setSenha(passwordEncoder().encode(user.getSenha()));
         
         return usuarioRepository.save(user);
