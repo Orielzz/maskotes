@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MaskotesApplication<maskotes (2)>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.br.maskotes.maskotes.MaskotesApplication",
+            "projectName": "maskotes (2)",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-LojaApplication<loja>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.br.maskotes.loja.LojaApplication",
+            "projectName": "loja",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
