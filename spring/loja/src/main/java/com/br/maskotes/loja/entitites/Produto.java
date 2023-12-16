@@ -29,22 +29,21 @@ public class Produto {
  
 
     @NotNull
+    @Column(nullable = false)
     private String nome;
-    @NotNull
+    
     private int porcentagem_varejo = 0;
-     @NotNull
     private int porcentagem_saco = 0;
 
     @NotNull
-    @Column(columnDefinition = "decimal(10,3) default 0.0")
+    @Column(columnDefinition = "decimal(10,3)",nullable = false)
     private Float preco_custo = 0.0f;
 
-    @Column(columnDefinition = "decimal(10,3) default 0.0")
-    @NotNull
+    @Column(columnDefinition = "decimal(10,3) default 0.0",nullable =  false)
     private Float preco_quilo = preco_custo*porcentagem_varejo/100;
 
-    @NotNull
-    @Column(columnDefinition = "decimal(10,3) default 0.0")
+    
+    @Column(columnDefinition = "decimal(10,3) default 0.0",nullable = false)
     private Float preco_saco = preco_custo*porcentagem_saco/100;
 
     @ManyToOne
@@ -62,6 +61,14 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name="fornecedor_id")
     private Fornecedor fornecedor;
+
+    @ManyToOne
+    @JoinColumn(name="idade_id")
+    private Idade idade;
+    
+    @ManyToOne
+    @JoinColumn(name="porte_id")
+    private Porte porte;
 
 
 }
