@@ -34,17 +34,21 @@ public class Produto {
     
     private int porcentagem_varejo = 0;
     private int porcentagem_saco = 0;
+    @Column(nullable = false)
+    private Long codigoBarras;
 
-    @NotNull
-    @Column(columnDefinition = "decimal(10,3)",nullable = false)
+    
+   
     private Float preco_custo = 0.0f;
 
-    @Column(columnDefinition = "decimal(10,3) default 0.0",nullable =  false)
+    
     private Float preco_quilo = preco_custo*porcentagem_varejo/100;
 
     
-    @Column(columnDefinition = "decimal(10,3) default 0.0",nullable = false)
+   
     private Float preco_saco = preco_custo*porcentagem_saco/100;
+
+    private String sabor;
 
     @ManyToOne
     @JoinColumn(name="tipo_produto_id")

@@ -29,11 +29,11 @@ public class ProdutoVendido {
     @Column(nullable = false)
     private int qtd = 0;
 
-    @Column(columnDefinition = "decimal(10,3)", nullable = false)
+    
     private Float preco_unidade= 0.0f;
 
     
-    @Column(columnDefinition = "decimal(10,3)",nullable = false)
+    
     private Float valor_total= qtd * preco_unidade;
 
     @ManyToOne

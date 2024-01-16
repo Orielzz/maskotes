@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +45,14 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public void delete(Long id) {
         produtoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Produto> findByNomeContaining(Optional<String> nome) {
+        if (nome.isPresent()) {
+            return produtoRepository.findByNomeContaining(nome.get());
+        } else {
+            return produtoRepository.findAll();
+        }
     }
 }
