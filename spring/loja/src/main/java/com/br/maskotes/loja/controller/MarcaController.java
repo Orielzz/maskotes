@@ -32,6 +32,11 @@ public class MarcaController {
         return marcaService.listOne(id);
     }
 
+    @GetMapping("/nome/{nome}")
+    public List<Marca> findByNome(@PathVariable String nome) {
+        return marcaService.findByNomeContainingIgnoreCase(nome);
+    }
+
     @PostMapping
     public Marca create(@RequestBody Marca marca) {
         return marcaService.create(marca);

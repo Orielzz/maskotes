@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import com.br.maskotes.loja.entitites.Marca;
 import com.br.maskotes.loja.repository.MarcaRepository;
 
@@ -22,9 +22,14 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public Marca listOne(Long id) {
+public Marca listOne(@PathVariable Long id) {
+    if (id != null) {
         return marcaRepository.findById(id).orElse(null);
+    } else {
+        throw new IllegalArgumentException("O ID não pode ser nulo.");
     }
+}
+
 
     @Override
     public Marca create(Marca marca) {
@@ -43,7 +48,17 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public void delete(Long id) {
+public void delete(Long id) {
+    if (id != null) {
         marcaRepository.deleteById(id);
+    } else {
+        throw new IllegalArgumentException("O ID não pode ser nulo.");
+    }
+}
+
+
+    @Override
+    public List<Marca> findByNomeContainingIgnoreCase(String nome) {
+        return marcaRepository.findByNomeContainingIgnoreCase(nome);
     }
 }

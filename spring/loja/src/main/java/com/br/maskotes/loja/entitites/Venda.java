@@ -1,6 +1,6 @@
 package com.br.maskotes.loja.entitites;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 import jakarta.persistence.Column;

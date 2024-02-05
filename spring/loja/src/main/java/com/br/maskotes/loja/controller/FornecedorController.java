@@ -30,7 +30,10 @@ public class FornecedorController {
         return fornecedorService.listAll();
     }
 
-    
+       @GetMapping("/nome/{nome}")
+    public List<Fornecedor> listOne(@PathVariable String nome) {
+        return fornecedorService.findByNomeContainingIgnoreCase(nome);
+    }
     @GetMapping("/{id}")
     public Fornecedor listOne(@PathVariable Long id) {
         return fornecedorService.listOne(id);

@@ -24,8 +24,13 @@ public class IdadeServiceImpl implements IdadeService {
 
     @Override
     public Idade listOne(@PathVariable Long id) {
-        return idadeRepository.findById(id).orElse(null);
+        if (id != null) {
+            return idadeRepository.findById(id).orElse(null);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
     }
+    
 
     @Override
     public Idade create(Idade idade) {
@@ -45,6 +50,11 @@ public class IdadeServiceImpl implements IdadeService {
 
     @Override
     public void delete(Long id) {
-        idadeRepository.deleteById(id);
+        if (id != null) {
+            idadeRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
     }
+    
 }

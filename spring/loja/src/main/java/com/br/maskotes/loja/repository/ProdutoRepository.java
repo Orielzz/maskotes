@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.br.maskotes.loja.entitites.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto,Long> {
-    List<Produto> findByNomeContaining(String name);
+    List<Produto> findByNomeContainingIgnoreCase(String name);
+    Produto findByCodigoBarras(Long codigo);
 }

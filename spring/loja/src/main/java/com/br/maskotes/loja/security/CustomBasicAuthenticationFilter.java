@@ -4,6 +4,7 @@
 // import java.io.PrintWriter;
 // import java.util.Base64;
 
+// import org.springframework.lang.NonNull;
 // import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 // import org.springframework.security.core.Authentication;
 // import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@
 
 // import com.br.maskotes.loja.entitites.user.Usuario;
 // import com.br.maskotes.loja.repository.UsuarioRepository;
+
 
 // import jakarta.servlet.FilterChain;
 // import jakarta.servlet.ServletException;
@@ -34,7 +36,7 @@
 //     };
 
 //     @Override
-//     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+//     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
 //             throws ServletException, IOException {
 //         if(isBasicAuthentication(request)){
 //             String[] credentials = decodeBase64(getHeader(request).replace(BASIC, ""))
@@ -42,7 +44,7 @@
 //             String login = credentials[0];
 //             String senha = credentials[1];
 
-//             Usuario user = usuarioRepository.findByLoginFetchRoles(login);
+//             Usuario user = usuarioRepository.findByLogin(login);
 
 //             if(user == null){
 //                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -73,7 +75,7 @@
 
 //     private Authentication createAuthenticationToken(Usuario user) {
 //         UsuarioPrincipal usuarioPrincipal = UsuarioPrincipal.create(user);
-//         return new UsernamePasswordAuthenticationToken(usuarioPrincipal, null, usuarioPrincipal.getAuthorities());
+//         return new UsernamePasswordAuthenticationToken(usuarioPrincipal, null, null);
 //     }
 
 //     private boolean checkPassword(String senhaUsuario, String senhaLogin) {

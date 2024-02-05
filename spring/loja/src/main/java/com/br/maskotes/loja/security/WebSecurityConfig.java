@@ -5,15 +5,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
 //import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 //import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+
 
 
 
@@ -29,7 +33,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class WebSecurityConfig {
     @Autowired
-    //private CustomBasicAuthenticationFilter customBasicAuthenticationFilter;
+    // private CustomBasicAuthenticationFilter customBasicAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -38,23 +42,30 @@ public class WebSecurityConfig {
     //         .authorizeHttpRequests((requests) -> requests
     //                 .requestMatchers(HttpMethod.POST,"/usuarios/**").permitAll()
     //                 .requestMatchers(HttpMethod.GET,"/ping/**").permitAll()
+    //                 .requestMatchers(HttpMethod.GET,"/site/public/login").permitAll()
     //                     .anyRequest().authenticated()
-    //                     ).addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+    //                     )
+    //                     .formLogin(formlogin -> formlogin
+    //                     .loginPage("/site/public/login.html")
+    //                     .permitAll()
+    //                     )
+                        
+    //                     .addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
     //                     .build();
-    http.csrf(csrf->csrf.disable())
-    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-    .authorizeHttpRequests(authorizeRequests ->
-        authorizeRequests.anyRequest().permitAll()
-    );
-
-return http.build();
-
-    }
-    @Bean
-    public WebMvcConfigurer corsConfig(){
+    
+        http.csrf(csrf->csrf.disable())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorizeRequests ->
+            authorizeRequests.anyRequest().permitAll()
+        );
+    
+    return http.build();
+}
+@Bean
+public WebMvcConfigurer corsConfig(){
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry){
+            public void addCorsMappings(@NonNull CorsRegistry registry){
                 registry.addMapping("/**")
                         .allowedOrigins("http://127.0.0.1:5500")
                         .allowedMethods(HttpMethod.GET.name(),

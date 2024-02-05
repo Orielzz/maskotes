@@ -44,4 +44,9 @@ public class AnimalController {
     public void delete(@PathVariable Long id) {
         animalService.delete(id);
     }
+
+        @GetMapping("/nome/{nome}")
+    public List<Animal> findByNomeContainingIgnoreCase(@PathVariable String nome) {
+        return animalService.findByNomeContainingIgnoreCase(nome);
+    }
 }

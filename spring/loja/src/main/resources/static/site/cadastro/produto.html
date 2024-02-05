@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Produto</title>
+  <link rel="icon" href="../img/pets_FILL0_wght400_GRAD0_opsz24.svg" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+  <script src="./script/produto.js" defer></script>
+  <link rel="stylesheet" href="../css/css.css">
+</head>
+<header>
+  <nav class="navbar navbar-expand-sm navbar-light bg-primary" id="neubar">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img src="../img/logo.jpeg" height="65" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto ">
+            <li class="nav-item">
+              <a class="nav-link mx-2" aria-current="page" href="../public/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-2" href="../lista/produto.html">Produtos</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Alterar
+              </a>
+              <ul class="dropdown-menu bg-white" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="../altera/marca.html">Marca</a></li>
+                  <li><a class="dropdown-item" href="../altera/produto.html">Produto</a></li>
+                  <li><a class="dropdown-item" href="../altera/fornecedor.html">Fornecedor</a></li>
+                  <li><a class="dropdown-item" href="../altera/animal.html">Animal</a></li>
+                  <li><a class="dropdown-item" href="../altera/tipo_produto.html">Tipo Produto</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Cadastrar
+              </a>
+              <ul class="dropdown-menu bg-white" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="../cadastro/marca.html">Marca</a></li>
+                  <li><a class="dropdown-item active" href="../cadastro/produto.html">Produto</a></li>
+                  <li><a class="dropdown-item" href="../cadastro/fornecedor.html">Fornecedor</a></li>
+                  <li><a class="dropdown-item" href="../cadastro/animal.html">Animal</a></li>
+                  <li><a class="dropdown-item" href="../cadastro/tipo_produto.html">Tipo Produto</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+</header>
+<body>
+  <div class="container mt-5">
+    <h2>Cadastro de Produto</h2>
+    <form id="produtoForm">
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome do Produto</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+      </div>
+      <div class="mb-3">
+        <label for="preco_custo" class="form-label">Preço de Custo</label>
+        <input type="text" class="form-control" id="preco_custo" name="preco_custo" pattern="\d+(\.\d{1,2})?" required >
+      </div>
+      <div class="mb-3">
+        <label for="porcentagem_saco" class="form-label">Porcentagem Saco</label>
+        <input type="number" class="form-control" id="porcentagem_saco" name="porcentagem_saco" required >
+      </div>
+      <div class="mb-3">
+        <label for="porcentagem_varejo" class="form-label">Porcentagem Varejo</label>
+        <input type="number" class="form-control" id="porcentagem_varejo" name="porcentagem_varejo" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="sabor" class="form-label">Sabor</label>
+        <input type="text" class="form-control" id="sabor" name="sabor" required>
+      </div>
+     
+      <div class="mb-3">
+        <label for="preco_saco" class="form-label">Preço do Saco</label>
+        <input type="text" class="form-control" id="preco_saco" name="preco_saco" pattern="\d+(\.\d{1,2})?" required>
+      </div>
+      <div class="mb-3">
+        <label for="preco_quilo" class="form-label">Preço à quilo</label>
+        <input type="text" class="form-control" id="preco_quilo" name="preco_quilo" pattern="\d+(\.\d{1,2})?" required>
+      </div>
+
+      <!-- Adicione isso onde deseja exibir os selects -->
+      <div class="d-flex flex-row mb-3 flex-wrap">
+        <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+          Animal:
+          <select id="animalSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+
+        <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+          Fornecedor:
+          <select id="fornecedorSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+
+        <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+          Idade:
+          <select id="idadeSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+
+        <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+          Marca:
+          <select id="marcaSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+
+        <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+          Porte:
+          <select id="porteSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+
+        <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+          Tipo de Produto:
+          <select id="tipoProdutoSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="codigoBarras" class="form-label">Codigo de Barras</label>
+        <input type="number" class="form-control" id="codigoBarras" name="codigoBarras" required>
+      </div>
+
+
+
+
+
+      
+      <!-- Adicione mais campos conforme necessário -->
+
+      <div id="mensagem"></div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+  </div>
+</body>
+</html>

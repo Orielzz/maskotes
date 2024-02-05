@@ -7,7 +7,8 @@ import com.br.maskotes.loja.entitites.Produto;
 
 public interface ProdutoService {
        List<Produto> listAll();
-       List<Produto> findByNomeContaining(Optional<String> infix);
+       List<Produto> findByNomeContainingIgnoreCase(Optional<String> infix);
+       Produto findByCodigoBarras(Long codigo);
     Produto create(Produto produto);
     Produto update(Produto produto);
     Produto listOne(Long id);

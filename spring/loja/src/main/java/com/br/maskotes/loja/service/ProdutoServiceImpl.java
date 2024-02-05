@@ -23,8 +23,13 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public Produto listOne(@PathVariable Long id) {
-        return produtoRepository.findById(id).orElse(null);
+        if (id != null) {
+            return produtoRepository.findById(id).orElse(null);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
     }
+    
 
     @Override
     public Produto create(Produto produto) {
@@ -44,15 +49,23 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public void delete(Long id) {
-        produtoRepository.deleteById(id);
+        if (id != null) {
+            produtoRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
+    }
+    
+
+    @Override
+    public List<Produto> findByNomeContainingIgnoreCase(Optional<String> nome) {
+        return produtoRepository.findByNomeContainingIgnoreCase(nome.get());
+      
+        
     }
 
     @Override
-    public List<Produto> findByNomeContaining(Optional<String> nome) {
-        if (nome.isPresent()) {
-            return produtoRepository.findByNomeContaining(nome.get());
-        } else {
-            return produtoRepository.findAll();
-        }
+    public Produto findByCodigoBarras(Long codigo) {
+        return produtoRepository.findByCodigoBarras(codigo);
     }
 }

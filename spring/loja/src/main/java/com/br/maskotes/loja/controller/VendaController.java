@@ -8,14 +8,18 @@ import com.br.maskotes.loja.service.VendaService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/venda")
@@ -34,6 +38,19 @@ public class VendaController {
     public Venda listOne(@PathVariable Long id) {
         return vendaService.listOne(id);
     }
+    @GetMapping("/between")
+    public List<Venda> listByVendasBetween(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date inicio,
+                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fim) {
+        return vendaService.findAllByDataVendaBetween(inicio, fim);
+    }
+
+    @GetMapping("/data")
+    public List<Venda> listByVendasData (@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date data) {
+        return vendaService.findAllByDataVenda(data);
+    }
+    
+
+    
 
     
     @PostMapping

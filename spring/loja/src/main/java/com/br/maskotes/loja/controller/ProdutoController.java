@@ -22,8 +22,8 @@ public class ProdutoController {
 
 
     @GetMapping("/nome/{nome}")
-    public List<Produto> listOne(@RequestParam Optional<String> nome) {
-        return produtoService.findByNomeContaining(nome);
+    public List<Produto> listOne(@PathVariable Optional<String> nome) {
+        return produtoService.findByNomeContainingIgnoreCase(nome);
     }
 
     
@@ -31,6 +31,11 @@ public class ProdutoController {
     public Produto listOne(@PathVariable Long id) {
         return produtoService.listOne(id);
     }
+    @GetMapping("/codigo/{codigo}")
+    public Produto listOneCodigo(@PathVariable Long codigo) {
+        return produtoService.findByCodigoBarras(codigo);
+    }
+
 
     
     @PostMapping

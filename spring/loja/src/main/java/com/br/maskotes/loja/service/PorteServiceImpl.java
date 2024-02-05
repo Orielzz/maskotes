@@ -22,10 +22,15 @@ public class PorteServiceImpl implements PorteService {
         return porteRepository.findAll();
     }
 
-    @Override
-    public Porte listOne(@PathVariable Long id) {
+   @Override
+public Porte listOne(@PathVariable Long id) {
+    if (id != null) {
         return porteRepository.findById(id).orElse(null);
+    } else {
+        throw new IllegalArgumentException("O ID não pode ser nulo.");
     }
+}
+
 
     @Override
     @Transactional
@@ -46,8 +51,12 @@ public class PorteServiceImpl implements PorteService {
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
-        porteRepository.deleteById(id);
+        if (id != null) {
+            porteRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
     }
+    
 }

@@ -20,6 +20,11 @@ public class TipoProdutoController {
         return tipoProdutoService.listAll();
     }
 
+       @GetMapping("/nome/{nome}")
+    public List<TipoProduto> findByNomeContainingIgnoreCase(@PathVariable String nome) {
+        return tipoProdutoService.findByDescricaoContainingIgnoreCase(nome);
+    }
+
     
     @GetMapping("/{id}")
     public TipoProduto listOne(@PathVariable Long id) {

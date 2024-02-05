@@ -4,6 +4,7 @@ import com.br.maskotes.loja.entitites.Animal;
 import com.br.maskotes.loja.repository.AnimalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -18,10 +19,15 @@ public class AnimalServiceImpl implements AnimalService {
         return animalRepository.findAll();
     }
 
-    @Override
-    public Animal listOne(Long id) {
+   @Override
+public Animal listOne(@PathVariable Long id) {
+    if (id != null) {
         return animalRepository.findById(id).orElse(null);
+    } else {
+        throw new IllegalArgumentException("O ID não pode ser nulo.");
     }
+}
+
 
     @Override
     public Animal create(Animal animal) {
@@ -41,6 +47,16 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public void delete(Long id) {
-        animalRepository.deleteById(id);
+        if (id != null) {
+            animalRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
+    }
+    
+
+    @Override
+    public List<Animal> findByNomeContainingIgnoreCase(String name) {
+        return animalRepository.findByNomeContainingIgnoreCase(name);
     }
 }

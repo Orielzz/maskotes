@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import com.br.maskotes.loja.entitites.Pagamento;
 import com.br.maskotes.loja.repository.PagamentoRepository;
 
@@ -22,10 +21,15 @@ public class PagamentoServiceImpl implements PagamentoService {
         return pagamentoRepository.findAll();
     }
 
-    @Override
-    public Pagamento listOne(@PathVariable Long id) {
-        return pagamentoRepository.findById(id).get();
+   @Override
+public Pagamento listOne(@PathVariable Long id) {
+    if (id != null) {
+        return pagamentoRepository.findById(id).orElse(null);
+    } else {
+        throw new IllegalArgumentException("O ID não pode ser nulo.");
     }
+}
+
 
     @Override
     @Transactional
@@ -45,9 +49,14 @@ public class PagamentoServiceImpl implements PagamentoService {
         return pagamentoRepository.save(pagamento);   
       }
 
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        pagamentoRepository.deleteById(id);    }
+      @Override
+      public void delete(Long id) {
+          if (id != null) {
+              pagamentoRepository.deleteById(id);
+          } else {
+              throw new IllegalArgumentException("O ID não pode ser nulo.");
+          }
+      }
+      
     
 }
