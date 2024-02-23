@@ -45,7 +45,8 @@ $(document).ready(function() {
 
       products.forEach(product => {
         const row = $("<tr>");
-        row.append($("<td>").text(product.codigoBarras));
+        row.append($("<td>").text(product.peso));
+
         row.append($("<td>").text(product.nome));
         row.append($("<td>").text(product.marca.nome));
         row.append($("<td>").text(product.animal.nome));

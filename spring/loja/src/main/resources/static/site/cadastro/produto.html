@@ -58,15 +58,19 @@
       </div>
     </nav>
 
-</header>
-<body>
-  <div class="container mt-5">
-    <h2>Cadastro de Produto</h2>
-    <form id="produtoForm">
-      <div class="mb-3">
-        <label for="nome" class="form-label">Nome do Produto</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
-      </div>
+  </header>
+  <body>
+    <div class="container mt-5">
+      <h2>Cadastro de Produto</h2>
+      <form id="produtoForm">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome do Produto</label>
+          <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
+        <div class="mb-3">
+          <label for="peso" class="form-label">Peso</label>
+          <input type="number" class="form-control" id="peso" name="peso" required>
+        </div>
       <div class="mb-3">
         <label for="preco_custo" class="form-label">Preço de Custo</label>
         <input type="text" class="form-control" id="preco_custo" name="preco_custo" pattern="\d+(\.\d{1,2})?" required >

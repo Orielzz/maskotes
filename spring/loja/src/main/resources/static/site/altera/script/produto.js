@@ -109,8 +109,9 @@ function alterarProduto(productId, novoProduto) {
 
       products.forEach(product => {
           const row = $("<tr>");
-          row.append($("<td>").text(product.codigoBarras));
+          
           row.append($("<td>").text(product.nome));
+          row.append($("<td>").text(product.peso));
           row.append($("<td>").text(product.marca.nome));
           row.append($("<td>").text(product.animal.nome));
           row.append($("<td>").text(product.idade.descricao));
@@ -172,6 +173,7 @@ function loadProductDataForAlteration(productId) {
            
             // Popule os campos do formulário com os dados do produto
             $("#nome").val(data.nome);
+            $("#peso").val(data.peso);
             $("#preco_custo").val(data.preco_custo);
             $("#porcentagem_saco").val(data.porcentagem_saco);
             $("#porcentagem_varejo").val(data.porcentagem_varejo);
@@ -253,6 +255,7 @@ function deleteProduct(productId) {
       const novoProduto = {
         id: productId,
         nome: $("#nome").val(),
+        peso:$("#peso").val(),
         preco_custo: $("#preco_custo").val(),
         porcentagem_saco: $("#porcentagem_saco").val(),
         porcentagem_varejo: $("#porcentagem_varejo").val(),
@@ -276,36 +279,43 @@ function deleteProduct(productId) {
       $('#alterarProdutoModal').modal('hide');
   });
 
-  function calcularPrecosComPorcentagem() {
-    const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
-    const porcentagemSaco = parseFloat(document.getElementById('porcentagem_saco').value) || 0;
-    const porcentagemVarejo = parseFloat(document.getElementById('porcentagem_varejo').value) || 0;
-  
-    const precoSaco = precoCusto * (1 + porcentagemSaco / 100);
-    const precoQuilo = precoCusto * (1 + porcentagemVarejo / 100);
-  
-    document.getElementById('preco_saco').value = precoSaco.toFixed(2);
-    document.getElementById('preco_quilo').value = precoQuilo.toFixed(2);
-  }
-  
-  function calcularPorcentagemComPrecos() {
-    const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
-    const precoSaco = parseFloat(document.getElementById('preco_saco').value) || 0;
-    const precoQuilo = parseFloat(document.getElementById('preco_quilo').value) || 0;
-  
-    const porcentagemSaco = ((precoSaco / precoCusto) - 1) * 100;
-    const porcentagemVarejo = ((precoQuilo / precoCusto) - 1) * 100;
-  
-    document.getElementById('porcentagem_saco').value = porcentagemSaco.toFixed(0);
-    document.getElementById('porcentagem_varejo').value = porcentagemVarejo.toFixed(0);
-  }
-  
-  document.getElementById('preco_custo').addEventListener('change', calcularPrecosComPorcentagem);
-  document.getElementById('porcentagem_saco').addEventListener('change', calcularPrecosComPorcentagem);
-  document.getElementById('porcentagem_varejo').addEventListener('change', calcularPrecosComPorcentagem);
-  
-  document.getElementById('preco_saco').addEventListener('change', calcularPorcentagemComPrecos);
-  document.getElementById('preco_quilo').addEventListener('change', calcularPorcentagemComPrecos);
   // Exiba todos os produtos ao carregar a página
   showAllProducts();
-});
+});    
+
+function calcularPrecosComPorcentagem() {
+  const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
+  const porcentagemSaco = parseFloat(document.getElementById('porcentagem_saco').value) || 0;
+  const porcentagemVarejo = parseFloat(document.getElementById('porcentagem_varejo').value) || 0;
+  const peso = parseFloat(document.getElementById('peso').value) || 0;
+
+  const precoSaco = precoCusto * (1 + porcentagemSaco / 100);
+  const precoQuilo = (precoCusto * (1 + porcentagemVarejo / 100))/peso;
+  
+
+  document.getElementById('preco_saco').value = precoSaco.toFixed(2);
+  document.getElementById('preco_quilo').value = precoQuilo.toFixed(2);
+}
+
+function calcularPorcentagemComPrecos() {
+  const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
+  const precoSaco = parseFloat(document.getElementById('preco_saco').value) || 0;
+  const precoQuilo = parseFloat(document.getElementById('preco_quilo').value) || 0;
+  const peso = parseFloat(document.getElementById('peso').value) || 0;
+
+  const porcentagemSaco = ((precoSaco / precoCusto) - 1) * 100;
+  const porcentagemVarejo = (((precoQuilo *peso) / precoCusto) - 1) * 100;
+
+  document.getElementById('porcentagem_saco').value = porcentagemSaco.toFixed(0);
+  document.getElementById('porcentagem_varejo').value = porcentagemVarejo.toFixed(0);
+}
+
+document.getElementById('preco_custo').addEventListener('change', calcularPrecosComPorcentagem);
+document.getElementById('porcentagem_saco').addEventListener('change', calcularPrecosComPorcentagem);
+document.getElementById('porcentagem_varejo').addEventListener('change', calcularPrecosComPorcentagem);
+document.getElementById('peso').addEventListener('change', calcularPrecosComPorcentagem);
+
+document.getElementById('preco_saco').addEventListener('change', calcularPorcentagemComPrecos);
+document.getElementById('preco_quilo').addEventListener('change', calcularPorcentagemComPrecos);
+document.getElementById('peso').addEventListener('change', calcularPorcentagemComPrecos);
+

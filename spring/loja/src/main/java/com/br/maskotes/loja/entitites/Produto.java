@@ -36,7 +36,7 @@ public class Produto {
     @Column(nullable = false)
     private Long codigoBarras;
 
-    
+    private Float peso = 0.0f;
    
     private Float preco_custo = 0.0f;
 

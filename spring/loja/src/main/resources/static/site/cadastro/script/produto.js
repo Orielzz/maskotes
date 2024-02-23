@@ -65,6 +65,7 @@ function prepareJson() {
   const porcentagem_saco = document.getElementById("porcentagem_saco").value;
   const porcentagem_varejo = document.getElementById("porcentagem_varejo").value;
   const sabor = document.getElementById("sabor").value;
+  const peso = document.getElementById("peso").value;
   const preco_saco = document.getElementById("preco_saco").value;
   const preco_quilo = document.getElementById("preco_quilo").value;
   const idAnimal = document.getElementById("animalSelect").value;
@@ -83,6 +84,7 @@ function prepareJson() {
     "preco_quilo": preco_quilo,
     "preco_saco": preco_saco,
     "sabor": sabor,
+    "peso":peso,
     "tipoProduto": {
         "id": idTipoProduto
     },
@@ -146,9 +148,11 @@ function calcularPrecosComPorcentagem() {
   const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
   const porcentagemSaco = parseFloat(document.getElementById('porcentagem_saco').value) || 0;
   const porcentagemVarejo = parseFloat(document.getElementById('porcentagem_varejo').value) || 0;
+  const peso = parseFloat(document.getElementById('peso').value) || 0;
 
   const precoSaco = precoCusto * (1 + porcentagemSaco / 100);
-  const precoQuilo = precoCusto * (1 + porcentagemVarejo / 100);
+  const precoQuilo = (precoCusto * (1 + porcentagemVarejo / 100))/peso;
+  
 
   document.getElementById('preco_saco').value = precoSaco.toFixed(2);
   document.getElementById('preco_quilo').value = precoQuilo.toFixed(2);
@@ -158,9 +162,10 @@ function calcularPorcentagemComPrecos() {
   const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
   const precoSaco = parseFloat(document.getElementById('preco_saco').value) || 0;
   const precoQuilo = parseFloat(document.getElementById('preco_quilo').value) || 0;
+  const peso = parseFloat(document.getElementById('peso').value) || 0;
 
   const porcentagemSaco = ((precoSaco / precoCusto) - 1) * 100;
-  const porcentagemVarejo = ((precoQuilo / precoCusto) - 1) * 100;
+  const porcentagemVarejo = (((precoQuilo *peso) / precoCusto) - 1) * 100;
 
   document.getElementById('porcentagem_saco').value = porcentagemSaco.toFixed(0);
   document.getElementById('porcentagem_varejo').value = porcentagemVarejo.toFixed(0);
@@ -169,7 +174,9 @@ function calcularPorcentagemComPrecos() {
 document.getElementById('preco_custo').addEventListener('change', calcularPrecosComPorcentagem);
 document.getElementById('porcentagem_saco').addEventListener('change', calcularPrecosComPorcentagem);
 document.getElementById('porcentagem_varejo').addEventListener('change', calcularPrecosComPorcentagem);
+document.getElementById('peso').addEventListener('change', calcularPrecosComPorcentagem);
 
 document.getElementById('preco_saco').addEventListener('change', calcularPorcentagemComPrecos);
 document.getElementById('preco_quilo').addEventListener('change', calcularPorcentagemComPrecos);
+document.getElementById('peso').addEventListener('change', calcularPorcentagemComPrecos);
 
