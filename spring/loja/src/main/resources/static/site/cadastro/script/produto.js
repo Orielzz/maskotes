@@ -109,12 +109,52 @@ function prepareJson() {
   return json;
 }
 
+/***
+ * 
+ * @return if a object its empty or not
+ * 
+ */
+function isEmpty(object){
+   array.forEach(element => {
+    
+   });
+    return true;
+}
 
 // Função para inserir um novo registro
 function insere() {
+    // const barras = document.getElementById('codigoBarras').value;
+    // console.log(barras);
+    // const uri =  "http://localhost:8080/produto/codigo/"+barras;
+    // fetch(uri, {
+    //     method: "GET",
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         // Adicione outros cabeçalhos conforme necessário
+    //     },
+        
+    // })
+    // .then(response => {
+    //     if (!response.ok) {
+    //         throw new Error('Erro na requisição Ajax');
+    //     }
+    //     if(isEmpty(response.json())){
+    //         throw new Error('Erro');
+    //     }
+    //     console.log(response.json());
+    // })
+    // .catch(error=>{
+    //     console.log(error)
+    //     const mensagemErro = document.createElement('div');
+    //   mensagemErro.className = 'alert alert-danger';
+    //   mensagemErro.textContent = 'Codigo de Barras já cadastrado';
+
+    //   document.getElementById('mensagem').appendChild(mensagemErro);
+    // });
+
+
   const url = "http://localhost:8080/produto";
   const data = prepareJson('#produtoForm');
-  console.log(data);
 
   makeAjaxRequest(url, 'POST', data, function(data) {
       const mensagemSucesso = document.createElement('div');

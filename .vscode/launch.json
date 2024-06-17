@@ -9,6 +9,16 @@
             "projectName": "maskotes",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-LojaApplication<loja>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.br.maskotes.loja.LojaApplication",
+            "projectName": "loja",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
