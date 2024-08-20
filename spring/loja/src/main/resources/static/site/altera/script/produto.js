@@ -3,7 +3,7 @@
 
 $(document).ready(function() {
   // URL da API
-  const apiUrl = "http://localhost:8080/produto";
+  const apiUrl = "http://192.168.1.229:8080/produto";
   
  
     // Função para inicializar o Select2
@@ -37,12 +37,12 @@ $(document).ready(function() {
     }
 
     // Inicialize o Select2 para cada seletor
-    initializeSelect2('#animalSelect', 'http://localhost:8080/animal', 'nome', 0);
-    initializeSelect2('#fornecedorSelect', 'http://localhost:8080/fornecedor', 'nome', 0);
-    initializeSelect2('#idadeSelect', 'http://localhost:8080/idade', 'descricao', 0);
-    initializeSelect2('#marcaSelect', 'http://localhost:8080/marca', 'nome', 0);
-    initializeSelect2('#porteSelect', 'http://localhost:8080/porte', 'descricao', 0);
-    initializeSelect2('#tipoProdutoSelect', 'http://localhost:8080/tipo-produto', 'descricao', 0);
+    initializeSelect2('#animalSelect', 'http://192.168.1.229:8080/animal', 'nome', 0);
+    initializeSelect2('#fornecedorSelect', 'http://192.168.1.229:8080/fornecedor', 'nome', 0);
+    initializeSelect2('#idadeSelect', 'http://192.168.1.229:8080/idade', 'descricao', 0);
+    initializeSelect2('#marcaSelect', 'http://192.168.1.229:8080/marca', 'nome', 0);
+    initializeSelect2('#porteSelect', 'http://192.168.1.229:8080/porte', 'descricao', 0);
+    initializeSelect2('#tipoProdutoSelect', 'http://192.168.1.229:8080/tipo-produto', 'descricao', 0);
 
     // Manipulador de evento para o evento 'shown.bs.modal' do Bootstrap
   
@@ -87,7 +87,7 @@ $(document).ready(function() {
 function alterarProduto(productId, novoProduto) {
     // Lógica para enviar os dados atualizados para o servidor
     $.ajax({
-        url: `http://localhost:8080/produto/${productId}`,
+        url: `http://192.168.1.229:8080/produto/${productId}`,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(novoProduto),
@@ -162,7 +162,7 @@ function alterarProduto(productId, novoProduto) {
 }
   // Função para carregar dados do produto no modal de alteração
 function loadProductDataForAlteration(productId) {
-    fetch(`http://localhost:8080/produto/${productId}`)
+    fetch(`http://192.168.1.229:8080/produto/${productId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na solicitação: ${response.status}`);
@@ -215,7 +215,7 @@ function deleteProduct(productId) {
     $('#confirmDeleteBtn').click(function() {
       // Lógica para excluir o produto
       $.ajax({
-        url: `http://localhost:8080/produto/${productId}`,
+        url: `http://192.168.1.229:8080/produto/${productId}`,
         method: "DELETE",
         success: function(response) {
           // Após a exclusão bem-sucedida, você pode recarregar os produtos

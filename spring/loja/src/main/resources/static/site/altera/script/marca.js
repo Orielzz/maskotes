@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // URL da API
-    const apiUrl = "http://localhost:8080/marca";
+    const apiUrl = "http://192.168.1.229:8080/marca";
     
     // Manipulador de evento para alteração no campo de pesquisa
     $("#searchInput").on("input", function() {

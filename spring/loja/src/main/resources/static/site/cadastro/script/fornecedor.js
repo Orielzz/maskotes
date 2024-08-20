@@ -14,7 +14,7 @@ function preparaJson() {
     return json;
 }
 
-const url = "http://localhost:8080/fornecedor";
+const url = "http://192.168.1.229:8080/fornecedor";
 
 document.getElementById("fornecedorForm").addEventListener('submit', function (event) {
     event.preventDefault();

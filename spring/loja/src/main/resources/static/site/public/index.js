@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar o Select2
-    const url = "http://localhost:8080/produto";
+    const url = "http://192.168.1.229:8080/produto";
 
     initializeSelect2("#productSearch", url, "nome", "sabor", "porte", 0);
 
@@ -81,7 +81,7 @@ function criaProdutosVendidosJSON(idVenda){
 
 function insereProdutosVendidos(lista){
     lista.forEach(produtoVendido=>{
-        makeAjaxRequest("http://localhost:8080/produto-vendido","POST",produtoVendido,criaMsgSucesso2,criaMsgErro2)
+        makeAjaxRequest("http://192.168.1.229:8080/produto-vendido","POST",produtoVendido,criaMsgSucesso2,criaMsgErro2)
 
         })
 
@@ -93,7 +93,7 @@ function insereProdutosVendidos(lista){
 
 function criaVenda(vendaJSON) {
     return makeAjaxRequest(
-        "http://localhost:8080/venda",
+        "http://192.168.1.229:8080/venda",
         "POST",
         vendaJSON,
         criaMsgSucesso, // Passando a referência da função, não a chamada da função
@@ -321,7 +321,7 @@ function removerProduto(productId) {
 }
 
 function buscaProduto(productId) {
-    return fetch(`http://localhost:8080/produto/${productId}`)
+    return fetch(`http://192.168.1.229:8080/produto/${productId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na solicitação: ${response.status}`);
@@ -332,7 +332,7 @@ function buscaProduto(productId) {
 
 
 function buscaProdutoCodigo(codigo) {
-    return fetch(`http://localhost:8080/produto/codigo/${codigo}`)
+    return fetch(`http://192.168.1.229:8080/produto/codigo/${codigo}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na solicitação: ${response.status}`);
