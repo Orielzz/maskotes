@@ -271,50 +271,7 @@ function addProduct() {
         });
 }
 
-function renderizarProdutos() {
-    const productContainer = document.getElementById('productContainer');
-    productContainer.innerHTML = ''; // Limpar o conteúdo atual
 
-    let totalVenda = 0; // Inicializar o total da venda
-
-    produtos.forEach(product => {
-        const productDiv = document.createElement('div');
-        productDiv.classList.add('mb-3');
-
-        const productInnerDiv = document.createElement('div');
-        productInnerDiv.classList.add('d-flex', 'justify-content-between', 'align-items-center');
-
-        const productNameSpan = document.createElement('span');
-        productNameSpan.textContent = `${product.name} - R$ ${product.price} - Quantidade: ${product.quantidade}`;
-
-        const subtotalSpan = document.createElement('span');
-        const subtotal = product.price * product.quantidade;
-        subtotalSpan.textContent = `- Subtotal: R$ ${subtotal.toFixed(2)}`;
-
-        totalVenda += subtotal; // Adicionar o subtotal ao total da venda
-        
-        
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.classList.add('btn', 'btn-danger');
-        removeButton.textContent = 'Remover';
-        removeButton.addEventListener('click', function() {
-            removerProduto(product.id);
-        });
-
-        productInnerDiv.appendChild(productNameSpan);
-        productInnerDiv.appendChild(subtotalSpan); // Adicionar o subtotal ao elemento
-        productInnerDiv.appendChild(removeButton);
-
-        productDiv.appendChild(productInnerDiv);
-        productContainer.appendChild(productDiv);
-    });
-
-    // Exibir o valor total da venda
-    const totalVendaSpan = document.getElementById('totalVenda');
-    totalVendaSpan.textContent = `Valor Total da Venda: R$ ${totalVenda.toFixed(2)}`;
-}
-    
 function removerProduto(productId) {
     produtos = produtos.filter(p => p.id !== productId);
     renderizarProdutos();

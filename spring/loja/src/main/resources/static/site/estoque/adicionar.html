@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Animal</title>
+  <title>Adicionar ao Estoque</title>
   <link rel="icon" href="../img/pets_FILL0_wght400_GRAD0_opsz24.svg" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js" defer></script>
-  <script src="./script/animal.js" defer></script>
-  <link href="path/to/select2.min.css" rel="stylesheet" />
-  <script src="path/to/select2.min.js" defer></script>
+  <script src="./script/estoque.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
   <link rel="stylesheet" href="../css/css.css">
 </head>
 
@@ -23,7 +23,17 @@
         </button>
     
         <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+         
           <ul class="navbar-nav ms-auto ">
+            <li class="nav-item dropdown">
+              <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Estoque
+              </a>
+              <ul class="dropdown-menu bg-white" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="../estoque/adicionar.html">Inserir Novo</a></li>
+                  <li><a class="dropdown-item" href="../estoque/controle.html">Controle</a></li>
+              </ul>
+            </li>
             <li class="nav-item ">
               <a class="nav-link mx-2" aria-current="page" href="../public/index.html">Home</a>
             </li>
@@ -63,14 +73,21 @@
 
 <body>
   <div class="container mt-5">
-    <h2>Cadastro de Animal</h2>
-    <form id="animalForm">
+    <h2>Adicionar ao Estoque</h2>
+    <form id="estoqueForm">
+        <div class="mb-3">
+          <label for="productSearch" class="form-label">Buscar Produto:</label>
+          <select id="productSearch" class="form-control">
+               <!-- Opção vazia para inicializar o Select2 -->
+              <!-- Opções de produtos serão carregadas dinamicamente aqui -->
+          </select>
+        </div>
       <div class="mb-3">
-        <label for="nome" class="form-label">Nome do Animal</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
+        <label for="quantidade" class="form-label">Quantidade a alterar</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" required placeholder="0">
       </div>
       <div id="mensagem"></div>
-      <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <button type="submit" id="submit" class="btn btn-primary">Adicionar</button>
     </form>
   </div>
 
