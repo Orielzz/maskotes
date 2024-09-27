@@ -110,6 +110,7 @@ function alterarProduto(productId, novoProduto) {
       products.forEach(product => {
           const row = $("<tr>");
           
+          row.append($("<td>").text(product.id));
           row.append($("<td>").text(product.nome));
           row.append($("<td>").text(product.peso));
           row.append($("<td>").text(product.marca.nome));
@@ -120,7 +121,6 @@ function alterarProduto(productId, novoProduto) {
           row.append($("<td>").text(product.tipoProduto.descricao));
           row.append($("<td>").text(product.preco_saco));
           row.append($("<td>").text(product.preco_quilo));
-          row.append($("<td>").text(product.preco_custo));
           row.append($("<td>").text(product.porcentagem_saco));
           row.append($("<td>").text(product.porcentagem_varejo));
           row.append($("<td>").text(product.fornecedor.nome));
