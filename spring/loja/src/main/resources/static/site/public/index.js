@@ -64,12 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error(`Erro durante a solicitação: ${error.message}`);
                 });
         }else {console.error('Codigo de Barras Inválido')}
-    });
-
-
-
-
-        
+    });    
     document.getElementById('addProductBtn').addEventListener('click', addProduct);
     document.getElementById("finalizarBtn").addEventListener('click',function(event){
         event.preventDefault();
@@ -82,13 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).catch(error => {
             console.error(`Erro durante a solicitação da venda sla: ${error.message}`);
         });
-
-
     })
-
-   
- 
-
 });
 const dataAtual = new Date().toISOString().slice(0,10);
 
@@ -185,7 +174,6 @@ function criaVendaJson(data,pagamento){
     const venda = 
         {
             "valorTotal": calcularValorTotalVenda(),
-            "dataVenda": data,
             "pagamento": {
                 "id": pagamento
             }

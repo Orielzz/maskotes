@@ -57,5 +57,14 @@ public ProdutoVendido create(ProdutoVendido produtoVendido) {
             throw new IllegalArgumentException("O ID não pode ser nulo.");
         }
     }
+
+    @Override
+    public List<ProdutoVendido> findByVendaId(Long idVenda) {
+        if (idVenda != null) {
+            return produtoVendidoRepository.findAllByVendaId(idVenda);
+        } else {
+            throw new IllegalArgumentException("O ID não pode ser nulo.");
+        }
+    }
     
 }

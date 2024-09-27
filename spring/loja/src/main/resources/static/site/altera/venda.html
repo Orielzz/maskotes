@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Estoque</title>
+    <title>Controle de Vendas</title>
     <link rel="icon" href="../img/pets_FILL0_wght400_GRAD0_opsz24.svg" />
+
+    <!-- Inclua o CSS do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Carregar jQuery primeiro -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" defer></script>
-    <script src="./script/controle.js" defer></script>
+
+    <!-- Carregar o JS do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Script customizado -->
+    <script src="./script/venda.js" defer></script>
+
+    <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+
+    <!-- Biblioteca de manipulação de datas -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js" defer></script>
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/css.css">
+
     <style>
         .table-container {
             margin: 20px;
@@ -21,6 +37,7 @@
         }
     </style>
 </head>
+
 <header>
     <nav class="navbar navbar-expand-sm navbar-light bg-primary" id="neubar">
         <div class="container">
@@ -38,7 +55,7 @@
                       </a>
                       <ul class="dropdown-menu bg-white" aria-labelledby="navbarDropdownMenuLink">
                           <li><a class="dropdown-item" href="../estoque/adicionar.html">Inserir Novo</a></li>
-                          <li><a class="dropdown-item active" href="../estoque/controle.html">Controle</a></li>
+                          <li><a class="dropdown-item" href="../estoque/controle.html">Controle</a></li>
                       </ul>
                     </li>
               <li class="nav-item ">
@@ -78,28 +95,66 @@
   
   </header>
 <body>
-    <div class="container table-container">
-        <!-- Campo de pesquisa -->
-        <div class="form-group">
-            <input type="text" id="search" class="form-control" placeholder="Pesquisar produtos...">
-        </div>
+    <div class="container">
+        <h1>Vendas</h1>
 
-        <!-- Tabela de produtos -->
-        <table id="products-table" class="table table-bordered table-striped">
-            <thead class="thead-dark">
+      
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="dataInicio">Data Início:</label>
+                <input type="date" id="dataInicio" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label for="dataFim">Data Fim:</label>
+                <input type="date" id="dataFim" class="form-control">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button id="buscar" class="btn btn-primary">Buscar</button>
+            </div>
+           
+        </div>
+        
+        <div class="alert alert-primary" role="alert">
+          Valor Total no Período: 
+          <span id="valorPeriodo"></span>
+        </div>
+        <table class="table">
+            <thead>
                 <tr>
-                    <th>Nome do Produto</th>
-                    <th>Peso</th>
-                    <th>Quantidade</th>
+                    <th>Data da Venda</th>
+                    <th>Valor Total</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
-            <tbody id="products-body">
-                <!-- Linhas da tabela serão adicionadas aqui -->
+            <tbody id="vendas-body">
+                <!-- Linhas da tabela serão inseridas aqui -->
             </tbody>
         </table>
+    
         <div id="mensagem"></div>
     </div>
-
+    
+    <!-- Modal para exibir os detalhes da venda -->
+    <div class="modal fade" id="vendaModal" tabindex="-1" role="dialog" aria-labelledby="vendaModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg-custom" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="vendaModalLabel">Detalhes da Venda</h5>
+            <button type="button" class="close" id="iconFecha" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul id="produto-vendido-list">
+                <!-- Produtos vendidos serão listados aqui -->
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="botaoFecha" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   
 
 

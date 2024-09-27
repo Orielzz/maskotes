@@ -9,4 +9,5 @@ public interface ProdutoVendidoService {
     ProdutoVendido update(ProdutoVendido produtoVendido);
     ProdutoVendido listOne(Long id);
     void delete(Long id);
+    List<ProdutoVendido> findByVendaId(Long idVenda);
 }

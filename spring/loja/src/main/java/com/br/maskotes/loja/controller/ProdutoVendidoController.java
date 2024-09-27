@@ -24,6 +24,10 @@ public class ProdutoVendidoController {
     public ProdutoVendido listOne(@PathVariable Long id) {
         return produtoVendidoService.listOne(id);
     }
+    @GetMapping("/venda/{id}")
+    public List<ProdutoVendido> findByVendaId(@PathVariable Long id) {
+        return produtoVendidoService.findByVendaId(id);
+    }
 
     
     @PostMapping

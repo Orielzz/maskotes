@@ -13,13 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-
-
-
-
-
-
-
 const dataAtual = new Date().toISOString().slice(0,10);
 
 

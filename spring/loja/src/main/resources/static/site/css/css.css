@@ -1,6 +1,11 @@
 .bg-primary{
     background-color: #F6BE23 !important;
 }
+
+.modal-lg-custom {
+    max-width: 80%; /* Define a largura como 80% da tela */
+}
+
 /* Efeito Active para o Botão da Navbar */
 .navbar-nav .nav-item.active .nav-link {
     background-color: #d6a51d; /* Sua cor de fundo personalizada */

@@ -3,7 +3,7 @@
 
 $(document).ready(function() {
     // URL da API
-    const apiUrl = "http://192.168.1.229:8080/animal";
+    const apiUrl = "http://localhost:8080/animal";
     
    
     
@@ -49,7 +49,7 @@ $(document).ready(function() {
   function alterarAnimal(animalId, novoAnimal) {
       // Lógica para enviar os dados atualizados para o servidor
       $.ajax({
-          url: `http://192.168.1.229:8080/animal/${animalId}`,
+          url: `http://localhost:8080/animal/${animalId}`,
           method: "PUT",
           contentType: "application/json",
           data: JSON.stringify(novoAnimal),
@@ -103,7 +103,7 @@ $(document).ready(function() {
   
     // Função para carregar dados do produto no modal de alteração
   function loadAnimalDataForAlteration(animalId) {
-      fetch(`http://192.168.1.229:8080/animal/${animalId}`)
+      fetch(`http://localhost:8080/animal/${animalId}`)
           .then(response => {
               if (!response.ok) {
                   throw new Error(`Erro na solicitação: ${response.status}`);
@@ -139,7 +139,7 @@ $(document).ready(function() {
       $('#confirmDeleteBtn').click(function() {
         // Lógica para excluir o produto
         $.ajax({
-          url: `http://192.168.1.229:8080/animal/${animalId}`,
+          url: `http://localhost:8080/animal/${animalId}`,
           method: "DELETE",
           success: function(response) {
             // Após a exclusão bem-sucedida, você pode recarregar os produtos

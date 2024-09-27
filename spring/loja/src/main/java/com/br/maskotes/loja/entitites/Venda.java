@@ -29,8 +29,8 @@ public class Venda {
     
     private Float valorTotal = 0.0f;
 
-    @Temporal(TemporalType.DATE)
-    @Column(columnDefinition = "date default current_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data_venda", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date dataVenda;
 
     @ManyToOne
