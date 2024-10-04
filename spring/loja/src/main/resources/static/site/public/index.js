@@ -264,10 +264,10 @@ function calcularValorTotalVenda() {
 
 
 let produtos = [];
-
+const idGenerico = 624
 function adicionarProduto(product) {
     const produtoExistente = produtos.find(p => p.id === product.id);
-    if (produtoExistente) {
+    if (produtoExistente && product.id != idGenerico) {
         produtoExistente.quantidade++;
     }else{
         product.quantidade = 1;
