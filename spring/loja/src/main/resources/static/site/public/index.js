@@ -81,6 +81,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 const dataAtual = new Date().toISOString().slice(0,10);
 
+document.getElementById("paymentType").addEventListener('change',function (){
+    const val = document.getElementById("paymentType").value;
+    const divtroco = document.getElementById("div-troco");
+    if (val == 1) {
+            divtroco.classList.remove("d-none");
+    }else{
+        if (divtroco.classList.contains("d-none")) {
+            
+        }else{
+            divtroco.classList.add("d-none");
+        }
+    }
+})
+
+
+
+
+
+
+
 function criaProdutosVendidosJSON(idVenda){
     let produtosJSON=[];
     produtos.forEach(product => {
@@ -275,6 +295,29 @@ function adicionarProduto(product) {
     }
     renderizarProdutos();
 }
+
+
+
+
+
+function calculaTroco(){
+    const valorRecebido = document.getElementById("troco").value;
+    const totalVenda = calcularValorTotalVenda();
+    console.log(valorRecebido);
+    console.log(totalVenda);
+    
+    document.getElementById("valor-troco").textContent = 'Troco a ser Dado: '+ (valorRecebido - totalVenda).toFixed(2) + 'R$';
+}
+
+
+
+
+
+document.getElementById("troco").addEventListener('change',
+    ev=>{
+        calculaTroco();
+    }
+)
 
 function addProduct() {
     const productIdInput = document.getElementById('productSearch');
