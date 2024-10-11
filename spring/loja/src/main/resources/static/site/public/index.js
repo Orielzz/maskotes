@@ -20,14 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if(id == 0 ){
                 id = 624;
             }
-            console.log(id);
             buscaProduto(id)
             .then(produto=>{
-                console.log(produto);
                 const valor = formatarValor(barcode.substring(6,12));
-                console.log(valor);
                 const qtd = valor / produto.preco_quilo;
-                console.log(qtd);
                 const product = {
                     id: produto.id,
                     name: produto.nome,
@@ -342,7 +338,14 @@ function addProduct() {
 
 
 function removerProduto(productId) {
-    produtos = produtos.filter(p => p.id !== productId);
+    produtos.forEach(p =>{
+        if(p.id==productId){
+            p.quantidade -= 1;
+            if (p.quantidade <= 0) {
+                produtos = produtos.filter(p=>p.id !==productId)
+            }
+        }
+    })
     renderizarProdutos();
 }
 
