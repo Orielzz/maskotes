@@ -77,24 +77,30 @@
     <h2 class="mb-4">Adicionar Venda</h2>
     <form id="addSaleForm">
         <div class="mb-3">
-            <label for="productSearch" class="form-label">Buscar Produto:</label>
+          <div class="mb-3">
+            <label for="productSearch" accesskey="b" class="form-label">Buscar Produto:</label>
             <select id="productSearch" class="form-control">
                  <!-- Opção vazia para inicializar o Select2 -->
                 <!-- Opções de produtos serão carregadas dinamicamente aqui -->
             </select>
           </div>
+            <div class="mb-3 d-none" id="divPrecoGenerico">
+              <label for="precoGenerico" accesskey="g" aria-placeholder="ValorGenerico"></label>
+              <input type="number" name="precoGenerico" id="precoGenerico"0 placeholder="Valor">
+            </div>
+          </div>
           <div class="mb-3">
               <button type="button" class="btn btn-primary" id="addProductBtn">Adicionar Produto</button>
           </div>
           <div class="mb-3">
-            <label for="barcodeSearch">Código de Barras:</label>
+            <label for="barcodeSearch" accesskey="c">Código de Barras:</label>
             <input type="text" id="barcodeSearch" class="form-control" placeholder="Digite o código de barras" autocomplete="off">
           </div>
         <div id="productContainer">
             <!-- Produtos adicionados dinamicamente aqui -->
         </div>
         <div class="mb-3">
-          <label for="paymentType">Tipo de Pagamento:</label>
+          <label for="paymentType" accesskey="p" >Tipo de Pagamento:</label>
           <select id="paymentType" class="form-select">
               <option value="1">Dinheiro</option>
               <option value="2">Cartão de Crédito</option>
@@ -103,13 +109,13 @@
           </select>
       </div>
         <div class="mb-4" id="div-troco">
-          <label for="troco">Valor Recebido:</label>
+          <label accesskey="t" for="troco">Valor Recebido:</label>
           <input type="number" name="troco" id="troco">
           <p id="valor-troco"></p>
         </div>
         <span id="totalVenda" class="total-venda"></span> <!-- Elemento para exibir o valor total da venda -->
         <div id="mensagem"></div>
-        <button type="button" class="btn btn-success" id="finalizarBtn">Finalizar Venda</button>
+        <button type="button" class="btn btn-success" accesskey="v" id="finalizarBtn">Finalizar Venda</button>
     </form>
 </div>
 

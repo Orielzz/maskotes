@@ -40,10 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error(`Erro durante a solicitação: ${error.message}`);
             });    
         }else if(barcode){
-            console.log(barcode);
             buscaProdutoCodigo(barcode)
                 .then(produto => {
-                    console.log(produto);
                     const product = {
                         id: produto.id,
                         name: produto.nome,
@@ -299,8 +297,7 @@ function adicionarProduto(product) {
 function calculaTroco(){
     const valorRecebido = document.getElementById("troco").value;
     const totalVenda = calcularValorTotalVenda();
-    console.log(valorRecebido);
-    console.log(totalVenda);
+
     
     document.getElementById("valor-troco").textContent = 'Troco a ser Dado: '+ (valorRecebido - totalVenda).toFixed(2) + 'R$';
 }
@@ -320,13 +317,20 @@ function addProduct() {
     const productId = productIdInput.value;
     buscaProduto(productId)
         .then(produto => {
-
-            const product = {
-                id: produto.id,
-                name: produto.nome,
-                price: produto.preco_saco
-            };
-
+            let product;
+            if(productId == idGenerico){
+                 product = {
+                    id: produto.id,
+                    name: produto.nome,
+                    price: document.getElementById("precoGenerico").value
+                };
+            }else{
+                 product = {
+                    id: produto.id,
+                    name: produto.nome,
+                    price: produto.preco_saco
+                };
+            }
             if (product) {
                 adicionarProduto(product);
             }
@@ -337,12 +341,14 @@ function addProduct() {
 }
 
 
-function removerProduto(productId) {
+function removerProduto(productId,productPrice) {
     produtos.forEach(p =>{
         if(p.id==productId){
             p.quantidade -= 1;
             if (p.quantidade <= 0) {
-                produtos = produtos.filter(p=>p.id !==productId)
+                console.log(p.price);
+                console.log(productPrice);
+                produtos = produtos.filter(p => !(p.id === productId && p.price === productPrice));
             }
         }
     })
@@ -418,7 +424,7 @@ function renderizarProdutos() {
         removeButton.classList.add('btn', 'btn-danger');
         removeButton.textContent = 'Remover';
         removeButton.addEventListener('click', function() {
-            removerProduto(product.id);
+            removerProduto(product.id,product.price);
         });
 
         productInnerDiv.appendChild(productNameSpan);
@@ -434,4 +440,16 @@ function renderizarProdutos() {
     totalVendaSpan.textContent = `Valor Total da Venda: R$ ${totalVenda.toFixed(2)}`;
 }
 
+
+$('#productSearch').on('select2:select', function (e) {
+    const productIdInput = document.getElementById('productSearch');
+    const productId = productIdInput.value;
+    const precoGenericoDiv = document.getElementById("divPrecoGenerico");
+
+    if(productId == idGenerico){
+        precoGenericoDiv.classList.remove("d-none");
+    }else{
+        precoGenericoDiv.classList.add("d-none");
+    }
+});
 
