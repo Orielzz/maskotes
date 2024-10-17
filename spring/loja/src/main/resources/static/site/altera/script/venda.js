@@ -19,18 +19,58 @@ function carregarVendas(dataInicio, dataFim) {
         });
 }
 
+const valorTotal = document.getElementById('valorTotal');
+const valorPix = document.getElementById('valorPix');
+const valorCredito = document.getElementById('valorCredito');
+const valorDebito = document.getElementById('valorDebito');
+const valorDinheiro = document.getElementById('valorDinheiro');
+
+
+let pix = 0;
+let credito = 0;
+let debito = 0;
+let dinheiro = 0;
+
+
+
 
 function cutDecimal(num, decimals) {
     const factor = Math.pow(10, decimals);
     return Math.floor(num * factor) / factor;
 }
+const PIX = 4;
+const DINHEIRO = 1;
+const CREDITO = 2;
+const DEBITO = 3;
+
 
 function somaVendasPeriodo(){
     let soma = 0;
     vendas.forEach(venda=>{
+      if (venda.pagamento.id == PIX) {
+            pix += cutDecimal(venda.valorTotal,2);
+      }
+      if (venda.pagamento.id == DINHEIRO) {
+        dinheiro += cutDecimal(venda.valorTotal,2);
+  }
+        if (venda.pagamento.id == DEBITO) {
+            debito += cutDecimal(venda.valorTotal,2);
+        }
+        if (venda.pagamento.id == CREDITO) {
+            credito += cutDecimal(venda.valorTotal,2);
+      }
+      
         soma += cutDecimal(venda.valorTotal,2);
     })
-    document.getElementById('valorPeriodo').textContent = `R$ ${soma.toFixed(2)}`; 
+    valorCredito.textContent = credito.toFixed(2);
+    valorDebito.textContent = debito.toFixed(2);
+    valorPix.textContent = pix.toFixed(2);
+    valorDinheiro.textContent = dinheiro.toFixed(2);
+
+    
+
+
+    valorTotal.textContent = `R$ ${soma.toFixed(2)}`; 
 }
 
 function buscaProdutosVendidos(idVenda) {

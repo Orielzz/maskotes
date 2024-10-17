@@ -251,7 +251,6 @@ function deleteProduct(productId) {
       // Pode incluir uma chamada AJAX para enviar os dados alterados ao servidor
       // ...
       const productId = $(this).data("product-id");
-      console.log(productId);
       const novoProduto = {
         id: productId,
         nome: $("#nome").val(),

@@ -346,8 +346,6 @@ function removerProduto(productId,productPrice) {
         if(p.id==productId){
             p.quantidade -= 1;
             if (p.quantidade <= 0) {
-                console.log(p.price);
-                console.log(productPrice);
                 produtos = produtos.filter(p => !(p.id === productId && p.price === productPrice));
             }
         }
