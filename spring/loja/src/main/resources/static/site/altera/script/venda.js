@@ -100,27 +100,11 @@ function atualizarTabela(dados) {
         tr.innerHTML = `
             <td>${new Date(item.dataVenda).toLocaleDateString()}</td>
             <td>R$ ${item.valorTotal.toFixed(2)}</td>
-            <td><button class="btn btn-info" 
-            onclick="buscaProdutosVendidos(${item.id})">Ver Produtos</button>
-            </td>
+            <td><button class="btn btn-info" onclick="buscaProdutosVendidos(${item.id})">Ver Produtos</button></td>
         `;
         tbody.appendChild(tr);
     });
 }
-
-
-function deleteProdutoVendido(id) {
-      $.ajax({
-        url: `http://localhost:8080/produto-vendido/${animalId}`,
-        method: "DELETE",
-        success: function(response) {
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-        }
-      });  
-  }
-
 
 // Função para abrir o modal e exibir os produtos vendidos
 function abrirModal(produtos) {
@@ -132,8 +116,6 @@ function abrirModal(produtos) {
         li.textContent = `${produtoVendido.produto.nome} - ${produtoVendido.qtd} unidade(s) - R$ ${produtoVendido.preco_unidade.toFixed(2)}`;
         listaProdutos.appendChild(li);
     });
-    const bt = document.createElement('button');
-    bt.textContent = 'teste';
 
     $('#vendaModal').modal('show'); // Abre o modal
 }
