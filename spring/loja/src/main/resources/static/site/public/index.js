@@ -278,7 +278,8 @@ function calcularValorTotalVenda() {
 
 
 let produtos = [];
-const idGenerico = 624
+const idGenerico = 624;
+const idDesconto = 733;
 function adicionarProduto(product) {
     const produtoExistente = produtos.find(p => p.id === product.id);
     if (produtoExistente && product.id != idGenerico) {
@@ -318,7 +319,7 @@ function addProduct() {
     buscaProduto(productId)
         .then(produto => {
             let product;
-            if(productId == idGenerico){
+            if(productId == idGenerico || productId == idDesconto){
                  product = {
                     id: produto.id,
                     name: produto.nome,
@@ -444,7 +445,7 @@ $('#productSearch').on('select2:select', function (e) {
     const productId = productIdInput.value;
     const precoGenericoDiv = document.getElementById("divPrecoGenerico");
 
-    if(productId == idGenerico){
+    if(productId == idGenerico || productId == idDesconto){
         precoGenericoDiv.classList.remove("d-none");
     }else{
         precoGenericoDiv.classList.add("d-none");
