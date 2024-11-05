@@ -98,7 +98,7 @@ function atualizarTabela(dados) {
     dados.forEach(item => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${new Date(item.dataVenda).toLocaleDateString()}</td>
+            <td>${new Date(item.dataVenda).toLocaleString()}</td>
             <td>R$ ${item.valorTotal.toFixed(2)}</td>
             <td><button class="btn btn-info" onclick="buscaProdutosVendidos(${item.id})">Ver Produtos</button></td>
         `;
