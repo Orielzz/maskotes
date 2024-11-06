@@ -452,3 +452,30 @@ $('#productSearch').on('select2:select', function (e) {
     }
 });
 
+
+$(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').focus();
+  });
+
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "F1") {
+        event.preventDefault();
+        const productSearch = $("#productSearch");
+        productSearch.focus();
+    }
+    if (event.key === "F2") {
+        event.preventDefault();
+        document.getElementById("barcodeSearch").focus();
+    }
+    if (event.key === "F3") {
+        event.preventDefault();
+        document.getElementById("paymentType").focus();
+    }
+    if (event.key === "F4") {
+        event.preventDefault();
+        document.getElementById("troco").focus();
+    }
+});
+
+

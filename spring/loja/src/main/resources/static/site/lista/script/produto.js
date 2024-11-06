@@ -1,66 +1,58 @@
-$(document).ready(function() {
-    // URL da API
-    const apiUrl = "http://192.168.1.229:8080/produto";
+const apiUrl = "http://192.168.1.229:8080/produto";
+document.addEventListener('DOMContentLoaded', function() {
 
-    // Manipulador de evento para alteração no campo de pesquisa
-    $("#searchInput").on("input", function() {
-      const searchTerm = $(this).val();
+  const table = criarTabela();    
+  showAllProducts(table);
+});
 
-      // Faça uma chamada AJAX para obter os produtos com base no termo de pesquisa
-      $.ajax({
-        url: searchTerm ? `${apiUrl}/nome/${encodeURIComponent(searchTerm)}` : apiUrl,
-        method: "GET",
-        dataType: "json",
-        success: function(products) {
-          // Exiba os produtos na tabela
-          showProducts(products);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-        }
-      });
-    });
+  function showAllProducts(table) {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(products => {
+            table.clear().rows.add(products).draw();  // Atualiza a tabela com todos os produtos
+        })
+        .catch(error => {
+            console.error('Falha na solicitação Fetch:', error);
+        });
+}
 
-    // Função para exibir todos os produtos na tabela
-    function showAllProducts() {
-      // Faça uma chamada AJAX para obter todos os produtos
-      $.ajax({
-        url: apiUrl,
-        method: "GET",
-        dataType: "json",
-        success: function(products) {
-          // Exiba todos os produtos na tabela
-          showProducts(products);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-        }
-      });
+function criarTabela(){
+  const table = new DataTable('#productTable', {
+    columns: [
+        { title: "Peso", data: "peso" },
+        { title: "Nome", data: "nome" },
+        { title: "Marca", data: "marca.nome" },
+        { title: "Animal", data: "animal.nome" },
+        { title: "Idade", data: "idade.descricao" },
+        { title: "Sabor", data: "sabor" },
+        { title: "Porte", data: "porte.descricao" },
+        { title: "Tipo Produto", data: "tipoProduto.descricao" },
+        { title: "Preço Saco", data: "preco_saco" },
+        { title: "Preço Quilo", data: "preco_quilo" }
+    ],
+    paging: true,
+    searching: true,
+    ordering: true,
+   // dom: 'Bfrltip', // Define onde os botões aparecerão
+   dom: "<'row'<'col-sm-12 col-md-3'B><'col-sm-12 col-md-3'l><'col-sm-12 col-md-6'f>>" +
+"<'row'<'col-sm-12'tr>>" +
+"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+  buttons: [
+    {
+      extend: 'colvis', // Botão de visibilidade das colunas
+      text: 'Selecionar Colunas'
     }
-
-    // Função para exibir produtos na tabela
-    function showProducts(products) {
-      const tableBody = $("#productTableBody");
-      tableBody.empty();
-
-      products.forEach(product => {
-        const row = $("<tr>");
-        row.append($("<td>").text(product.peso));
-
-        row.append($("<td>").text(product.nome));
-        row.append($("<td>").text(product.marca.nome));
-        row.append($("<td>").text(product.animal.nome));
-        row.append($("<td>").text(product.idade.descricao));
-        row.append($("<td>").text(product.sabor));
-        row.append($("<td>").text(product.porte.descricao));
-        row.append($("<td>").text(product.tipoProduto.descricao));
-        row.append($("<td>").text(product.preco_saco));
-        row.append($("<td>").text(product.preco_quilo));
-        // Adicione mais colunas conforme necessário
-        tableBody.append(row);
-      });
-    }
-
-    // Exiba todos os produtos ao carregar a página
-    showAllProducts();
-  });
+  ],
+  lengthMenu: [  [10, 50, 100, 300, 500, 1000], [10, 50, 100, 300, 500, 1000] ],
+  pageLength: 100,
+  language: {
+    lengthMenu: "Mostrar _MENU_ entradas",
+    search: "Pesquisar:",
+    info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+    infoEmpty: "Nenhum resultado encontrado",
+    infoFiltered: "(filtrado de _MAX_ entradas totais)",
+    zeroRecords: "Nenhum registro encontrado"
+  }
+});
+return table;
+}

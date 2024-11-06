@@ -1,6 +1,8 @@
+
 let vendas = [];
 
-// Função para buscar e preencher os dados na tabela de vendas
+
+
 function carregarVendas(dataInicio, dataFim) {
     fetch(`http://192.168.1.229:8080/venda/between?inicio=${dataInicio}&fim=${dataFim}`)
         .then(response => {
@@ -12,12 +14,76 @@ function carregarVendas(dataInicio, dataFim) {
         .then(data => {
             vendas = data;
             somaVendasPeriodo();
-            atualizarTabela(data);
+            atualizarTabela(vendas);
         })
         .catch(error => {
             console.error('Erro ao carregar vendas:', error);
         });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tableElement = document.getElementById('vendas-table');
+        table = new DataTable(tableElement, {
+        columns: [
+            {title: "ID" , data:"id" , visible:false},
+            { title: "Data da Venda", data: "dataVenda" },
+            { title: "Valor Total", data: "valorTotal" },
+            { 
+                title: "Ações", 
+                data: null, 
+                render : function(data,type,row){
+                    return criarBotao(row.id);
+                }    
+            }
+        ],
+        paging: false,
+        searching: true,
+        ordering: true,
+        info: true,
+        lengthChange: true,
+        responsive:true
+    });
+    carregarVendasDeHoje();
+});
+
+
+function criarBotao(idVenda){
+    const bt = document.createElement('button');
+    bt.classList.add('btn','btn-info' ,'verProdutos');
+    
+    bt.innerText = 'Ver Produtos';
+    
+    bt.addEventListener('click', function() {
+        buscaProdutosVendidos(idVenda);
+    });
+
+    return bt;
+}
+
+
+function validarDatas(dataInicio, dataFim) {
+    if (!dataInicio || !dataFim) {
+        alert('Por favor, selecione as datas de início e fim.');
+        return false;
+    }
+
+    const inicio = dayjs(dataInicio).startOf('day').toDate();
+    const fim = dayjs(dataFim).endOf('day').toDate();
+
+    if (!dayjs(dataInicio).isValid() || !dayjs(dataFim).isValid()) {
+        alert('Por favor, insira datas válidas.');
+        return false;
+    }
+
+    if (inicio > fim) {
+        alert('A data de início não pode ser posterior à data de fim.');
+        return false;
+    }
+
+    return true;
+}
+
+
 
 const valorTotal = document.getElementById('valorTotal');
 const valorPix = document.getElementById('valorPix');
@@ -73,6 +139,11 @@ function somaVendasPeriodo(){
     valorTotal.textContent = `R$ ${soma.toFixed(2)}`; 
 }
 
+
+function name(params) {
+    
+}
+
 function buscaProdutosVendidos(idVenda) {
     fetch(`http://192.168.1.229:8080/produto-vendido/venda/${idVenda}`)
         .then(response => {
@@ -90,26 +161,24 @@ function buscaProdutosVendidos(idVenda) {
         });
 }
 
-// Função para atualizar a tabela de vendas
-function atualizarTabela(dados) {
-    const tbody = document.getElementById('vendas-body');
-    tbody.innerHTML = ''; // Limpa a tabela existente
 
-    dados.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${new Date(item.dataVenda).toLocaleString()}</td>
-            <td>R$ ${item.valorTotal.toFixed(2)}</td>
-            <td><button class="btn btn-info" onclick="buscaProdutosVendidos(${item.id})">Ver Produtos</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
+function atualizarTabela(dados) {
+    const dadosFormatados = dados.map(venda => ({
+        dataVenda: dayjs(venda.dataVenda).format('DD/MM/YYYY HH:mm:ss'), // Formato desejado
+        valorTotal: `R$ ${venda.valorTotal.toFixed(2)}`, // Formatação do valor total com prefixo "R$"
+        id: venda.id 
+        }));
+
+
+    table.clear().rows.add(dadosFormatados).draw(); // Limpa e adiciona novos dados
 }
+
+
 
 // Função para abrir o modal e exibir os produtos vendidos
 function abrirModal(produtos) {
     const listaProdutos = document.getElementById('produto-vendido-list');
-    listaProdutos.innerHTML = ''; // Limpa os itens anteriores
+    listaProdutos.innerHTML = ''; 
 
     produtos.forEach(produtoVendido => {
         const li = document.createElement('li');
@@ -117,14 +186,14 @@ function abrirModal(produtos) {
         listaProdutos.appendChild(li);
     });
 
-    $('#vendaModal').modal('show'); // Abre o modal
+    $('#vendaModal').modal('show');
 }
 
 document.getElementById('botaoFecha').addEventListener('click',function (){
-    $('#vendaModal').modal('toggle'); // Abre o modal
+    $('#vendaModal').modal('toggle');
 })
 document.getElementById('iconFecha').addEventListener('click',function (){
-    $('#vendaModal').modal('toggle'); // Abre o modal
+    $('#vendaModal').modal('toggle');
 })
 
 // Função para capturar a data atual e carregar as vendas de hoje automaticamente
@@ -137,22 +206,17 @@ function carregarVendasDeHoje() {
 }
 
 
-// Carrega automaticamente as vendas de hoje ao abrir a página
-document.addEventListener('DOMContentLoaded', function() {
-    carregarVendasDeHoje();
-});
+
+
 
 // Função para capturar as datas e carregar as vendas entre elas (usada com botão buscar)
 document.getElementById('buscar').addEventListener('click', function() {
     const dataInicio = document.getElementById('dataInicio').value;
     const dataFim = document.getElementById('dataFim').value;
     
-    const inicio = dayjs(dataInicio).startOf('day').toDate(); // Define o início do dia
-    const fim = dayjs(dataFim).endOf('day').toDate(); // Define o fim do dia
-
-    if (dataInicio && dataFim) {
+    if (validarDatas(dataInicio, dataFim)) {
+        const inicio = dayjs(dataInicio).startOf('day').toDate();
+        const fim = dayjs(dataFim).endOf('day').toDate();
         carregarVendas(inicio.toISOString(), fim.toISOString());
-    } else {
-        alert('Por favor, selecione as datas de início e fim.');
     }
 });
