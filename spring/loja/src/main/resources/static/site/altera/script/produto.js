@@ -1,320 +1,241 @@
+const apiUrl = "http://192.168.1.229:8080/produto";
+const meuModalAlterar = new bootstrap.Modal(document.getElementById('alterarProdutoModal'));
+const meuModalExcluir = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
+document.addEventListener("DOMContentLoaded", function () {
 
+    initializeSelect2("#animalSelect", "http://192.168.1.229:8080/animal", "nome", 0);
+    initializeSelect2("#fornecedorSelect", "http://192.168.1.229:8080/fornecedor", "nome", 0);
+    initializeSelect2("#idadeSelect", "http://192.168.1.229:8080/idade", "descricao", 0);
+    initializeSelect2("#marcaSelect", "http://192.168.1.229:8080/marca", "nome", 0);
+    initializeSelect2("#porteSelect", "http://192.168.1.229:8080/porte", "descricao", 0);
+    initializeSelect2("#tipoProdutoSelect", "http://192.168.1.229:8080/tipo-produto", "descricao", 0);
 
-$(document).ready(function() {
-  // URL da API
-  const apiUrl = "http://192.168.1.229:8080/produto";
-  
- 
-    // Função para inicializar o Select2
-    function initializeSelect2(selector, url, textField, minimumInputLength) {
-        $(selector).select2({
-            ajax: {
-                url: function (params) {
-                    return params.term ? `${url}/nome/${encodeURIComponent(params.term)}` : url;
-                },
-                dataType: 'json',
-                delay: 250,
-                processResults: function(data) {
-                    return {
-                        results: data.map(function(item) {
-                            return {
-                                id: item.id,
-                                text: item[textField]
-                            };
-                        })
-                    };
-                },
-                cache: true,
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-                }
-            },
-            containerCssClass: 'custom-select2-container',
-            dropdownCssClass: 'custom-select2-dropdown',
-            minimumInputLength: minimumInputLength
-        });
-    }
+    const table = criarTabela();
 
-    // Inicialize o Select2 para cada seletor
-    initializeSelect2('#animalSelect', 'http://192.168.1.229:8080/animal', 'nome', 0);
-    initializeSelect2('#fornecedorSelect', 'http://192.168.1.229:8080/fornecedor', 'nome', 0);
-    initializeSelect2('#idadeSelect', 'http://192.168.1.229:8080/idade', 'descricao', 0);
-    initializeSelect2('#marcaSelect', 'http://192.168.1.229:8080/marca', 'nome', 0);
-    initializeSelect2('#porteSelect', 'http://192.168.1.229:8080/porte', 'descricao', 0);
-    initializeSelect2('#tipoProdutoSelect', 'http://192.168.1.229:8080/tipo-produto', 'descricao', 0);
-
-    // Manipulador de evento para o evento 'shown.bs.modal' do Bootstrap
-  
-  // Manipulador de evento para alteração no campo de pesquisa
-  $("#searchInput").on("input", function() {
-      const searchTerm = $(this).val();
-
-      // Faça uma chamada AJAX para obter os produtos com base no termo de pesquisa
-      $.ajax({
-          url: searchTerm ? `${apiUrl}/nome/${encodeURIComponent(searchTerm)}` : apiUrl,
-          method: "GET",
-          dataType: "json",
-          success: function(products) {
-              // Exiba os produtos na tabela
-              showProducts(products);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-              console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-          }
-      });
-  });
-
-  // Função para exibir todos os produtos na tabela
-  function showAllProducts() {
-      // Faça uma chamada AJAX para obter todos os produtos
-      $.ajax({
-          url: apiUrl,
-          method: "GET",
-          dataType: "json",
-          success: function(products) {
-              // Exiba todos os produtos na tabela
-              showProducts(products);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-              console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-          }
-      });
-  }
-
-
-  // Função para alterar um produto
-function alterarProduto(productId, novoProduto) {
-    // Lógica para enviar os dados atualizados para o servidor
-    $.ajax({
-        url: `http://192.168.1.229:8080/produto/${productId}`,
-        method: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify(novoProduto),
-        success: function(response) {
-            // Exemplo: recarrega os produtos após a alteração (remova se não for necessário)
-            showAllProducts();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
-        }
+    document.getElementById("salvarAlteracaoBtn").addEventListener("click", function () {
+        const productId = this.dataset.productId;
+        const novoProduto = {
+            id: productId,
+            nome: document.getElementById("nome").value,
+            peso: document.getElementById("peso").value,
+            preco_custo: document.getElementById("preco_custo").value,
+            porcentagem_saco: document.getElementById("porcentagem_saco").value,
+            porcentagem_varejo: document.getElementById("porcentagem_varejo").value,
+            sabor: document.getElementById("sabor").value,
+            preco_saco: document.getElementById("preco_saco").value,
+            preco_quilo: document.getElementById("preco_quilo").value,
+            codigoBarras: document.getElementById("codigoBarras").value,
+            animal: { id: document.getElementById("animalSelect").value },
+            fornecedor: { id: document.getElementById("fornecedorSelect").value },
+            idade: { id: document.getElementById("idadeSelect").value },
+            marca: { id: document.getElementById("marcaSelect").value },
+            porte: { id: document.getElementById("porteSelect").value },
+            tipoProduto: { id: document.getElementById("tipoProdutoSelect").value }
+        };
+        fecharModal(meuModalAlterar);
+        alterarProduto(productId, novoProduto,table);
     });
+    showAllProducts(table);
+});
+
+document.getElementById('porcentagem_saco').addEventListener('change',calcularPrecosComPorcentagem);
+document.getElementById('porcentagem_varejo').addEventListener('change',calcularPrecosComPorcentagem);
+document.getElementById('preco_saco').addEventListener('change',calcularPorcentagemComPrecos);
+document.getElementById('preco_quilo').addEventListener('change',calcularPorcentagemComPrecos);
+
+document.getElementById('botaoX').addEventListener('click',() => fecharModal(meuModalExcluir));
+document.getElementById('cancelBtn').addEventListener('click',() =>fecharModal(meuModalExcluir));
+
+function alterarProduto(productId, novoProduto , table) {
+    fetch(`${apiUrl}/${productId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(novoProduto)
+    })
+    .then(response => showAllProducts(table))
+    .catch(error => console.error("Falha na solicitação Ajax:", error));
 }
 
-
-  // Função para exibir produtos na tabela
-  function showProducts(products) {
-      const tableBody = $("#productTableBody");
-      tableBody.empty();
-
-      products.forEach(product => {
-          const row = $("<tr>");
-          
-          row.append($("<td>").text(product.id));
-          row.append($("<td>").text(product.nome));
-          row.append($("<td>").text(product.peso));
-          row.append($("<td>").text(product.marca.nome));
-          row.append($("<td>").text(product.animal.nome));
-          row.append($("<td>").text(product.idade.descricao));
-          row.append($("<td>").text(product.sabor));
-          row.append($("<td>").text(product.porte.descricao));
-          row.append($("<td>").text(product.tipoProduto.descricao));
-          row.append($("<td>").text(product.preco_saco));
-          row.append($("<td>").text(product.preco_quilo));
-          row.append($("<td>").text(product.porcentagem_saco));
-          row.append($("<td>").text(product.porcentagem_varejo));
-          row.append($("<td>").text(product.fornecedor.nome));
-
-          // Coluna de Ações
-          const actionsColumn = $("<td>");
-          const alterarButton = $(`<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#alterarProdutoModal" data-product-id="${product.id}">Alterar</button>`);
-          const excluirButton = $(`<button class="btn btn-danger btn-sm" data-product-id="${product.id}">Excluir</button>`);
-
-          // Adiciona eventos aos botões
-          alterarButton.click(function() {
-              const productId = $(this).data("product-id");
-              loadProductDataForAlteration(productId);
-          });
-
-          excluirButton.click(function() {
-              const productId = $(this).data("product-id");
-              deleteProduct(productId);
-          });
-
-          // Adiciona botões à coluna de ações
-          actionsColumn.append(alterarButton);
-          actionsColumn.append(" ");
-          actionsColumn.append(excluirButton);
-          row.append(actionsColumn);
-
-          tableBody.append(row);
-      });
-  }
-  function setValueAndTriggerChange(selector, dataId, dataText) {
-    if ($(selector).find("option[value='" + dataId + "']").length) {
-        $(selector).val(dataId).trigger('change');
-    } else { 
-        // Create a DOM Option and pre-select by default
-        var newOption = new Option(dataText, dataId, true, true);
-        // Append it to the select
-        $(selector).append(newOption).trigger('change');
-    }
-}
-  // Função para carregar dados do produto no modal de alteração
-function loadProductDataForAlteration(productId) {
-    fetch(`http://192.168.1.229:8080/produto/${productId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro na solicitação: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-           
-            // Popule os campos do formulário com os dados do produto
-            $("#nome").val(data.nome);
-            $("#peso").val(data.peso);
-            $("#preco_custo").val(data.preco_custo);
-            $("#porcentagem_saco").val(data.porcentagem_saco);
-            $("#porcentagem_varejo").val(data.porcentagem_varejo);
-            $("#sabor").val(data.sabor);
-            $("#preco_saco").val(data.preco_saco);
-            $("#preco_quilo").val(data.preco_quilo);
-            $("#codigoBarras").val(data.codigoBarras);
-            
-            // Atualiza os Select2 com os valores corretos
-           // Set the value, creating a new option if necessary
-           setValueAndTriggerChange("#animalSelect", data.animal.id, data.animal.nome);
-           setValueAndTriggerChange("#fornecedorSelect", data.fornecedor.id, data.fornecedor.nome);
-           setValueAndTriggerChange("#idadeSelect", data.idade.id, data.idade.descricao);
-           setValueAndTriggerChange("#marcaSelect", data.marca.id, data.marca.nome);
-           setValueAndTriggerChange("#porteSelect", data.porte.id, data.porte.descricao);
-           setValueAndTriggerChange("#tipoProdutoSelect", data.tipoProduto.id, data.tipoProduto.descricao);
-
-
-            // Atualize o atributo de dados (data attribute) do botão "Salvar Alterações" com o ID do produto
-            $("#salvarAlteracaoBtn").data("product-id", productId);
-
-            // Exemplo: abre o modal (remova se não for necessário)
-            $('#alterarProdutoModal').modal('show');
+function showAllProducts(table) {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(products => {
+            table.clear().rows.add(products).draw();  // Atualiza a tabela com todos os produtos
         })
         .catch(error => {
-            console.error(`Erro durante a solicitação: ${error.message}`);
+            console.error('Falha na solicitação Fetch:', error);
         });
 }
 
 
 
-
-// Função para excluir um produto
-function deleteProduct(productId) {
-    // Exibir modal de confirmação
-    $('#confirmDeleteModal').modal('show');
-  
-    // Capturar o clique no botão de confirmação de exclusão
-    $('#confirmDeleteBtn').click(function() {
-      // Lógica para excluir o produto
-      $.ajax({
-        url: `http://192.168.1.229:8080/produto/${productId}`,
-        method: "DELETE",
-        success: function(response) {
-          // Após a exclusão bem-sucedida, você pode recarregar os produtos
-          showAllProducts();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error('Falha na solicitação Ajax:', textStatus, errorThrown);
+function criarTabela(){
+  const table = new DataTable('#productTable', {
+    columns: [
+        { title: "ID", data: "id" },
+        { title: "Nome", data: "nome" },
+        { title: "Peso", data: "peso" },
+        { title: "Marca", data: "marca.nome" },
+        { title: "Animal", data: "animal.nome" },
+        { title: "Idade", data: "idade.descricao" },
+        { title: "Sabor", data: "sabor" },
+        { title: "Porte", data: "porte.descricao" },
+        { title: "Tipo Produto", data: "tipoProduto.descricao" },
+        { title: "Preço Saco", data: "preco_saco" },
+        { title: "Preço Quilo", data: "preco_quilo" },
+        { title: "Porcentagem Saco", data: "porcentagem_saco" },
+        { title: "Porcentagem Varejo", data: "porcentagem_varejo" },
+        { title: "Fornecedor", data: "fornecedor.nome" },
+        { title: "Custo", data: "preco_custo" },
+        { 
+            title: "Ações", 
+            data: null, 
+            render : function(data,type,row){
+                return renderizarBotoes(row.id);
+            }    
         }
-      });
-      
-      // Fechar modal de confirmação após exclusão
-      $('#confirmDeleteModal').modal('hide');
+    ],
+    layout:{
+        topStart:{
+            buttons: [
+                'colvis','pageLength'
+                ]
+        }
+    },
+    stateSave:true,
+    paging: true,
+    searching: true,
+    ordering: true,
+    lengthMenu: [  [10, 50, 100, 300, 500, 1000], [10, 50, 100, 300, 500, 1000] ],
+    pageLength: 100,
+    language: {
+        lengthMenu: "Mostrar _MENU_ entradas",
+        search: "Pesquisar:",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+        infoEmpty: "Nenhum resultado encontrado",
+        infoFiltered: "(filtrado de _MAX_ entradas totais)",
+        zeroRecords: "Nenhum registro encontrado"
+    }
     });
-  
-    // Capturar o clique no botão de cancelar
-    $('#cancelBtn').click( function () {
-        $('#confirmDeleteModal').modal('hide');
-     
+return table;
+}
+function criarBotaoAlterar(idProduto){
+    const bt = document.createElement('button');
+    bt.classList.add('btn','btn-info');
+    bt.innerText = '📝';
+    bt.addEventListener('click', function() {
+        abrirModalAlteração(idProduto);
     });
-    $('#botaoX').click( function () {
-        $('#confirmDeleteModal').modal('hide');
-     
-    });
-  
-  }
-  
-  
-  
+        return bt ;
+}
 
-  // Evento ao clicar no botão "Salvar Alterações" no modal de alteração
-  $("#salvarAlteracaoBtn").click(function() {
-      // Lógica para salvar as alterações
-      // Pode incluir uma chamada AJAX para enviar os dados alterados ao servidor
-      // ...
-      const productId = $(this).data("product-id");
-      const novoProduto = {
-        id: productId,
-        nome: $("#nome").val(),
-        peso:$("#peso").val(),
-        preco_custo: $("#preco_custo").val(),
-        porcentagem_saco: $("#porcentagem_saco").val(),
-        porcentagem_varejo: $("#porcentagem_varejo").val(),
-        sabor: $("#sabor").val(),
-        preco_saco: $("#preco_saco").val(),
-        preco_quilo: $("#preco_quilo").val(),
-        codigoBarras: $("#codigoBarras").val(),
-        animal: { id: $("#animalSelect").val() },
-        fornecedor: { id: $("#fornecedorSelect").val() },
-        idade: { id: $("#idadeSelect").val() },
-        marca: { id: $("#marcaSelect").val() },
-        porte: { id: $("#porteSelect").val() },
-        tipoProduto: { id: $("#tipoProdutoSelect").val() }
+function criarBotaoExcluir(produtoId){
+    const bt = document.createElement('button');
+    bt.classList.add('btn','btn-danger');
+    bt.innerText = '❌';
+    bt.addEventListener('click', function() {
+        deleteProduct(produtoId);
+    });
+    return bt;
+}
+
+function renderizarBotoes(idProduto) {
+    const div = document.createElement('div');
+    div.classList.add('d-flex', 'gap-2');
+    div.appendChild(criarBotaoAlterar(idProduto));
+    div.appendChild(criarBotaoExcluir(idProduto));
+    return div;
+}
+
+
+function setValueAndTriggerChange(selector, dataId, dataText) {
+    const element = document.querySelector(selector);
+    if (!element) return;
+
+    let option = Array.from(element.options).find(opt => opt.value == dataId);
+    if (!option) {
+        option = document.createElement("option");
+        option.value = dataId;
+        option.text = dataText;
+        element.appendChild(option);
+    }
+    element.value = dataId;
+}
+
+function abrirModal(modal){
+    modal.show();
+}
+function fecharModal(modal){
+   modal.hide();
+}
+
+function abrirModalAlteração(productId) {
+    fetch(`${apiUrl}/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            ["nome", "peso", "preco_custo", "porcentagem_saco", "porcentagem_varejo", "sabor", "preco_saco", "preco_quilo", "codigoBarras"].forEach(id => {
+                document.getElementById(id).value = data[id];
+            });
+            setValueAndTriggerChange("#animalSelect", data.animal.id, data.animal.nome);
+            setValueAndTriggerChange("#fornecedorSelect", data.fornecedor.id, data.fornecedor.nome);
+            setValueAndTriggerChange("#idadeSelect", data.idade.id, data.idade.descricao);
+            setValueAndTriggerChange("#marcaSelect", data.marca.id, data.marca.nome);
+            setValueAndTriggerChange("#porteSelect", data.porte.id, data.porte.descricao);
+            setValueAndTriggerChange("#tipoProdutoSelect", data.tipoProduto.id, data.tipoProduto.descricao);
+            document.getElementById("salvarAlteracaoBtn").dataset.productId = productId;
+            abrirModal(meuModalAlterar);
+        })
+        .catch(error => console.error("Erro durante a solicitação:", error));
+}
+
+function deleteProduct(productId) {
+    abrirModal(meuModalExcluir);
+    document.getElementById("confirmDeleteBtn").onclick = function () {
+        fetch(`${apiUrl}/${productId}`, { method: "DELETE" })
+            .then(response => showAllProducts())
+            .catch(error => console.error("Falha na solicitação Ajax:", error));
+        fecharModal(meuModalExcluir);
     };
+}
 
+function initializeSelect2(selector, url, textField, minimumInputLength) {
+    const element = document.querySelector(selector);
+    if (!element) return;
 
-    // Chame a função para alterar o produto
-    alterarProduto(productId, novoProduto);
-
-      // Exemplo: fecha o modal após salvar as alterações (remova se não for necessário)
-      $('#alterarProdutoModal').modal('hide');
-  });
-
-  // Exiba todos os produtos ao carregar a página
-  showAllProducts();
-});    
+    element.addEventListener("input", function (event) {
+        const term = event.target.value;
+        fetch(term ? `${url}/nome/${encodeURIComponent(term)}` : url)
+            .then(response => response.json())
+            .then(data => {
+                element.innerHTML = ""; // Limpa opções anteriores
+                data.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.id;
+                    option.text = item[textField];
+                    element.appendChild(option);
+                });
+            })
+            .catch(error => console.error("Falha na solicitação Ajax:", error));
+    });
+}
 
 function calcularPrecosComPorcentagem() {
-  const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
-  const porcentagemSaco = parseFloat(document.getElementById('porcentagem_saco').value) || 0;
-  const porcentagemVarejo = parseFloat(document.getElementById('porcentagem_varejo').value) || 0;
-  const peso = parseFloat(document.getElementById('peso').value) || 0;
+    const precoCusto = parseFloat(document.getElementById("preco_custo").value) || 0;
+    const porcentagemSaco = parseFloat(document.getElementById("porcentagem_saco").value) || 0;
+    const porcentagemVarejo = parseFloat(document.getElementById("porcentagem_varejo").value) || 0;
+    const peso = parseFloat(document.getElementById("peso").value) || 0;
 
-  const precoSaco = precoCusto * (1 + porcentagemSaco / 100);
-  const precoQuilo = (precoCusto * (1 + porcentagemVarejo / 100))/peso;
-  
-
-  document.getElementById('preco_saco').value = precoSaco.toFixed(2);
-  document.getElementById('preco_quilo').value = precoQuilo.toFixed(2);
+    document.getElementById("preco_saco").value = (precoCusto * (1 + porcentagemSaco / 100)).toFixed(2).replace(',', '.');
+    document.getElementById("preco_quilo").value = ((precoCusto * (1 + porcentagemVarejo / 100)) / peso).toFixed(2).replace(',', '.');
 }
 
 function calcularPorcentagemComPrecos() {
-  const precoCusto = parseFloat(document.getElementById('preco_custo').value) || 0;
-  const precoSaco = parseFloat(document.getElementById('preco_saco').value) || 0;
-  const precoQuilo = parseFloat(document.getElementById('preco_quilo').value) || 0;
-  const peso = parseFloat(document.getElementById('peso').value) || 0;
+    const precoCusto = parseFloat(document.getElementById("preco_custo").value) || 0;
+    const precoSaco = parseFloat(document.getElementById("preco_saco").value) || 0;
+    const precoQuilo = parseFloat(document.getElementById("preco_quilo").value) || 0;
+    const peso = parseFloat(document.getElementById("peso").value) || 0;
 
-  const porcentagemSaco = ((precoSaco / precoCusto) - 1) * 100;
-  const porcentagemVarejo = (((precoQuilo *peso) / precoCusto) - 1) * 100;
-
-  document.getElementById('porcentagem_saco').value = porcentagemSaco.toFixed(0);
-  document.getElementById('porcentagem_varejo').value = porcentagemVarejo.toFixed(0);
+    document.getElementById("porcentagem_saco").value = (((precoSaco / precoCusto) - 1) * 100).toFixed(0);
+    document.getElementById("porcentagem_varejo").value = (((precoQuilo * peso / precoCusto) - 1) * 100).toFixed(0);
 }
-
-document.getElementById('preco_custo').addEventListener('change', calcularPrecosComPorcentagem);
-document.getElementById('porcentagem_saco').addEventListener('change', calcularPrecosComPorcentagem);
-document.getElementById('porcentagem_varejo').addEventListener('change', calcularPrecosComPorcentagem);
-document.getElementById('peso').addEventListener('change', calcularPrecosComPorcentagem);
-
-document.getElementById('preco_saco').addEventListener('change', calcularPorcentagemComPrecos);
-document.getElementById('preco_quilo').addEventListener('change', calcularPorcentagemComPrecos);
-document.getElementById('peso').addEventListener('change', calcularPorcentagemComPrecos);
-

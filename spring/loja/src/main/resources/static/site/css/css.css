@@ -21,10 +21,11 @@
     color: #ffffff; /* Cor do texto ao passar o mouse */
     /* Adicione outros estilos conforme necessário */
 }
- 
  .custom-select2-dropdown{
   z-index: 10000 !important;
  }
+
+
  .total-venda {
     position: fixed;
     bottom: 20px;

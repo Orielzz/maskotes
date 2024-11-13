@@ -92,11 +92,6 @@ const valorDebito = document.getElementById('valorDebito');
 const valorDinheiro = document.getElementById('valorDinheiro');
 
 
-let pix = 0;
-let credito = 0;
-let debito = 0;
-let dinheiro = 0;
-
 
 
 
@@ -111,6 +106,11 @@ const DEBITO = 3;
 
 
 function somaVendasPeriodo(){
+    
+    let pix = 0;
+    let credito = 0;
+    let debito = 0;
+    let dinheiro = 0;
     let soma = 0;
     vendas.forEach(venda=>{
       if (venda.pagamento.id == PIX) {

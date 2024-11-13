@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar o Select2
     const url = "http://192.168.1.229:8080/produto";
 
     initializeSelect2("#productSearch", url, "nome", "sabor", "porte", 0);
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const barcodeSearch = document.getElementById('barcodeSearch');
 
-    // Ouvir o evento input no campo de código de barras
     barcodeSearch.addEventListener('change', function() {
         const barcode = barcodeSearch.value;
         
@@ -121,10 +119,6 @@ function insereProdutosVendidos(lista){
 
 }
 
-
-
-
-
 function criaVenda(vendaJSON) {
     return makeAjaxRequest(
         "http://192.168.1.229:8080/venda",
@@ -148,28 +142,20 @@ function criaMsgSucesso() {
 
     document.getElementById('mensagem').appendChild(mensagemSucesso);
     document.getElementById("addSaleForm").reset();
-    
-  
-    
+        
     renderizarProdutos();
     
-    // Desaparecer a mensagem de sucesso após 5 segundos
     setTimeout(function() {
         mensagemSucesso.remove();
     }, 5000); // 5000 milissegundos = 5 segundos
 }
 
-function criaMsgSucesso2() {
-   
-}function criaMsgErro2(){
+function criaMsgErro2(){
     const mensagemErro = document.createElement('div');
       mensagemErro.className = 'alert alert-danger';
       mensagemErro.textContent = 'Erro ao registrar ProdutoVendido';
       document.getElementById('mensagem').appendChild(mensagemErro);
 }
-
-
-
 
 function criaMsgErro(){
     const mensagemErro = document.createElement('div');
@@ -178,13 +164,7 @@ function criaMsgErro(){
       document.getElementById('mensagem').appendChild(mensagemErro);
 }
 
-
-
-
-function criaVendaJson(data,pagamento){
-    
-    
-   
+function criaVendaJson(data,pagamento){   
     const venda = 
         {
             "valorTotal": calcularValorTotalVenda(),
@@ -231,11 +211,6 @@ function makeAjaxRequest(url, method, data, successCallback, errorCallback) {
     });
 }
 
-
-
-
-
-
 function initializeSelect2(selector, url, textField, flavorField, porteField, minimumInputLength) {
     $(document).ready(function() {
         $(selector).select2({
@@ -275,8 +250,6 @@ function calcularValorTotalVenda() {
     return valorTotalVenda.toFixed(2); // Arredondando para duas casas decimais
 }
 
-
-
 let produtos = [];
 const idGenerico = 624;
 const idDesconto = 733;
@@ -291,24 +264,14 @@ function adicionarProduto(product) {
     renderizarProdutos();
 }
 
-
-
-
-
 function calculaTroco(){
     const valorRecebido = document.getElementById("troco").value;
-    const totalVenda = calcularValorTotalVenda();
-
-    
+    const totalVenda = calcularValorTotalVenda();    
     document.getElementById("valor-troco").textContent = 'Troco a ser Dado: '+ (valorRecebido - totalVenda).toFixed(2) + 'R$';
 }
 
-
-
-
-
 document.getElementById("troco").addEventListener('change',
-    ev=>{
+    ()=>{
         calculaTroco();
     }
 )
@@ -341,7 +304,6 @@ function addProduct() {
         });
 }
 
-
 function removerProduto(productId,productPrice) {
     produtos.forEach(p =>{
         if(p.id==productId){
@@ -373,28 +335,18 @@ function buscaProdutoCodigo(codigo) {
             return response.json(); // Retorna a Promise do JSON
         });
 }
-
-
-
-    
-    
+        
     function formatarValor(valor) {
    
 
-    // Extrair os últimos 2 dígitos como a parte decimal
     const parteDecimal = valor.slice(-2); // Últimos 2 dígitos
     const parteInteira = valor.slice(0, -2); // Resto da string
 
-    // Combinar as partes
     const valorFormatado = `${parteInteira}.${parteDecimal}`;
 
-    // Converter para número com ponto flutuante
     return parseFloat(valorFormatado);
 }
     
-
-
-
 function renderizarProdutos() {
     const productContainer = document.getElementById('productContainer');
     productContainer.innerHTML = ''; // Limpar o conteúdo atual
@@ -416,8 +368,7 @@ function renderizarProdutos() {
         subtotalSpan.textContent = `- Subtotal: R$ ${subtotal.toFixed(2)}`;
 
         totalVenda += subtotal; // Adicionar o subtotal ao total da venda
-        
-        
+            
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
         removeButton.classList.add('btn', 'btn-danger');
