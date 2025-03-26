@@ -92,7 +92,9 @@ document.getElementById("paymentType").addEventListener('change',function (){
 
 
 
-
+function criaMsgSucesso2(){
+    
+}
 function criaProdutosVendidosJSON(idVenda){
     let produtosJSON=[];
     produtos.forEach(product => {
