@@ -137,34 +137,57 @@
           <!-- Adicione isso onde deseja exibir os selects -->
           <div class="d-flex flex-row mb-3 flex-wrap selectEnvolvido" >
             <div class="mb-3 p-2" style="width: calc(50% - 10px);">
-              Animal:
-              <select id="animalSelect" class="form-select" style="width: 100%;"></select>
+              <label for="animalInput">Animal:</label>
+              <input type="text" id="animalInput" name="animal_text" class="form-control" list="datalistAnimal" placeholder="Selecione um Animal">
+              <datalist id="datalistAnimal"></datalist>
+              <!-- Campo oculto para armazenar o ID do animal selecionado -->
+              <input type="hidden" id="animalId" name="animal_id">
             </div>
+            
     
             <div class="mb-3 p-2" style="width: calc(50% - 10px);">
-              Fornecedor:
-              <select id="fornecedorSelect" class="form-select" style="width: 100%;"></select>
+              <label for="fornecedorInput">Fornecedor:</label>
+              <input type="text" id="fornecedorInput" name="fornecedor_text" class="form-control" list="datalistFornecedor" placeholder="Selecione um Fornecedor">
+              <datalist id="datalistFornecedor"></datalist>
+              <!-- Campo oculto para armazenar o ID do fornecedor selecionado -->
+              <input type="hidden" id="fornecedorId" name="fornecedor_id">
             </div>
+            
     
             <div class="mb-3 p-2" style="width: calc(50% - 10px);">
-              Idade:
-              <select id="idadeSelect" class="form-select" style="width: 100%;"></select>
+              <label for="idadeInput">Idade:</label>
+              <input type="text" id="idadeInput" name="idade_text" class="form-control" list="datalistIdade" placeholder="Selecione uma Idade">
+              <datalist id="datalistIdade"></datalist>
+              <!-- Campo oculto para armazenar o ID do idade selecionado -->
+              <input type="hidden" id="idadeId" name="idade_id">
             </div>
+            
+            <div class="mb-3 p-2" style="width: calc(50% - 10px);">
+              <label for="marcaInput">Marca:</label>
+              <input type="text" id="marcaInput" name="marca_text" class="form-control" list="datalistMarca" placeholder="Selecione um Marca">
+              <datalist id="datalistMarca"></datalist>
+              <!-- Campo oculto para armazenar o ID do marca selecionado -->
+              <input type="hidden" id="marcaId" name="marca_id">
+            </div>
+            
     
             <div class="mb-3 p-2" style="width: calc(50% - 10px);">
-              Marca:
-              <select id="marcaSelect" class="form-select" style="width: 100%;"></select>
+              <label for="porteInput">Porte:</label>
+              <input type="text" id="porteInput" name="porte_text" class="form-control" list="datalistPorte" placeholder="Selecione um Porte">
+              <datalist id="datalistPorte"></datalist>
+              <!-- Campo oculto para armazenar o ID do porte selecionado -->
+              <input type="hidden" id="porteId" name="porte_id">
             </div>
+            
     
             <div class="mb-3 p-2" style="width: calc(50% - 10px);">
-              Porte:
-              <select id="porteSelect" class="form-select" style="width: 100%;"></select>
+              <label for="tipoProdutoInput">Tipo Produto:</label>
+              <input type="text" id="tipoProdutoInput" name="tipoProduto_text" class="form-control" list="datalistTipoProduto" placeholder="Selecione um Tipo de Produto">
+              <datalist id="datalistTipoProduto"></datalist>
+              <!-- Campo oculto para armazenar o ID do tipoProduto selecionado -->
+              <input type="hidden" id="tipoProdutoId" name="tipoProduto_id">
             </div>
-    
-            <div class="mb-3 p-2" style="width: calc(50% - 10px);">
-              Tipo de Produto:
-              <select id="tipoProdutoSelect" class="form-select" style="width: 100%;"></select>
-            </div>
+            
           </div>
           <div class="mb-3">
             <label for="codigoBarras" class="form-label">Codigo de Barras</label>

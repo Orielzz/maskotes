@@ -32,7 +32,7 @@
 //     @Bean
 //     public AuthenticationEntryPoint authenticationEntryPoint() {
 //         return (request, response, authException) -> {
-//             response.sendRedirect("http://192.168.1.229:8080/site/public/login.html");
+//             response.sendRedirect("http://192.168.1.108:8080/site/public/login.html");
 //         };
 //     }
 // }

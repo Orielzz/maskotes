@@ -1,0 +1,29 @@
+
+services:
+  app:
+    build: .
+    container_name: springboot-app
+    image: oriel00/maskotesapp:1.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD:  
+      MYSQL_DATABASE: maskotesdb
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: usuario
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+    driver: local

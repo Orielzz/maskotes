@@ -6,7 +6,7 @@ function preparaJson(nomeAnimal) {
   return json;
 }
 
-const url = "http://192.168.1.229:8080/animal";
+const url = "http://192.168.1.108:8080/animal";
 
 document.getElementById("animalForm").addEventListener('submit', function (event) {
   event.preventDefault();

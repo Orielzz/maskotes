@@ -14,7 +14,7 @@ function preparaJson() {
     return json;
 }
 
-const url = "http://192.168.1.229:8080/tipo-produto";
+const url = "http://192.168.1.108:8080/tipo-produto";
 
 document.getElementById("tipoProdutoForm").addEventListener('submit', function (event) {
     event.preventDefault();

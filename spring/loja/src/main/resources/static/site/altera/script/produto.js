@@ -1,20 +1,19 @@
-const apiUrl = "http://192.168.1.229:8080/produto";
+const apiUrl = "http://192.168.1.108:8080/produto";
 const meuModalAlterar = new bootstrap.Modal(document.getElementById('alterarProdutoModal'));
 const meuModalExcluir = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+const urlPura = "http://192.168.1.108:8080";
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    initializeSelect2("#animalSelect", "http://192.168.1.229:8080/animal", "nome", 0);
-    initializeSelect2("#fornecedorSelect", "http://192.168.1.229:8080/fornecedor", "nome", 0);
-    initializeSelect2("#idadeSelect", "http://192.168.1.229:8080/idade", "descricao", 0);
-    initializeSelect2("#marcaSelect", "http://192.168.1.229:8080/marca", "nome", 0);
-    initializeSelect2("#porteSelect", "http://192.168.1.229:8080/porte", "descricao", 0);
-    initializeSelect2("#tipoProdutoSelect", "http://192.168.1.229:8080/tipo-produto", "descricao", 0);
+
 
     const table = criarTabela();
 
+
     document.getElementById("salvarAlteracaoBtn").addEventListener("click", function () {
         const productId = this.dataset.productId;
+        console.log(productId);
+        console.log(this);
         const novoProduto = {
             id: productId,
             nome: document.getElementById("nome").value,
@@ -26,18 +25,44 @@ document.addEventListener("DOMContentLoaded", function () {
             preco_saco: document.getElementById("preco_saco").value,
             preco_quilo: document.getElementById("preco_quilo").value,
             codigoBarras: document.getElementById("codigoBarras").value,
-            animal: { id: document.getElementById("animalSelect").value },
-            fornecedor: { id: document.getElementById("fornecedorSelect").value },
-            idade: { id: document.getElementById("idadeSelect").value },
-            marca: { id: document.getElementById("marcaSelect").value },
-            porte: { id: document.getElementById("porteSelect").value },
-            tipoProduto: { id: document.getElementById("tipoProdutoSelect").value }
+            animal: { id: pegaId(document.getElementById("animalInput").value, "datalistAnimal") },
+            fornecedor: { id: pegaId(document.getElementById("fornecedorInput").value, "datalistFornecedor") },
+            idade: { id: pegaId(document.getElementById("idadeInput").value, "datalistIdade") },
+            marca: { id: pegaId(document.getElementById("marcaInput").value, "datalistMarca") },
+            porte: { id: pegaId(document.getElementById("porteInput").value, "datalistPorte") },
+            tipoProduto: { id: pegaId(document.getElementById("tipoProdutoInput").value, "datalistTipoProduto") }
         };
+        console.log(novoProduto); // console
         fecharModal(meuModalAlterar);
         alterarProduto(productId, novoProduto,table);
     });
     showAllProducts(table);
 });
+
+/**
+ * Função que tenta encontrar no datalist uma opção com o mesmo valor digitado
+ * e retorna o data-id correspondente.
+ * @param {string} valorDigitado - Valor digitado no input.
+ * @param {string} datalistId - ID do elemento <datalist> a ser verificado.
+ * @returns {string} - O valor do data-id encontrado.
+ * @throws {Error} - Se nenhuma opção corresponder ao valor digitado.
+ */
+function pegaId(valorDigitado, datalistId) {
+    const datalist = document.getElementById(datalistId);
+    if (!datalist) {
+        throw new Error(`Datalist com ID "${datalistId}" não foi encontrado.`);
+    }
+    
+    const option = Array.from(datalist.options)
+        .find(option => option.value === valorDigitado);
+    
+    if (option) {
+        return option.getAttribute('data-id');
+    } else {
+        throw new Error(`Opção "${valorDigitado}" não encontrada no datalist.`);
+    }
+}
+
 
 document.getElementById('porcentagem_saco').addEventListener('change',calcularPrecosComPorcentagem);
 document.getElementById('porcentagem_varejo').addEventListener('change',calcularPrecosComPorcentagem);
@@ -51,10 +76,10 @@ function alterarProduto(productId, novoProduto , table) {
     fetch(`${apiUrl}/${productId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(novoProduto)
+        body: JSON.stringify(novoProduto)                                                                                                      
     })
     .then(response => showAllProducts(table))
-    .catch(error => console.error("Falha na solicitação Ajax:", error));
+    .catch(error => console.error("Falha ao alterar Produto:", error.message));
 }
 
 function showAllProducts(table) {
@@ -67,6 +92,36 @@ function showAllProducts(table) {
             console.error('Falha na solicitação Fetch:', error);
         });
 }
+
+function desenharOpcoesDatalist(url,seletor,hiddenInputID,campo){
+   fetch(url)
+   .then(response => response.json()) 
+   .then(dados => {
+     const element = document.querySelector(seletor);
+     element.innerHTML = ""; 
+     dados.forEach(item => {
+         const option = document.createElement("option");
+         option.value = item[campo];
+         option.dataset.id = item.id;
+         option.dataset.hiddenId = hiddenInputID;
+         element.appendChild(option);
+     });
+   })
+
+}
+
+
+function desenharTodasOpcoesDatalist(){
+    desenharOpcoesDatalist(`${urlPura}/animal`, '#datalistAnimal','#animaId','nome');
+    desenharOpcoesDatalist(`${urlPura}/fornecedor`, '#datalistFornecedor','#fornecedorId','nome');
+    desenharOpcoesDatalist(`${urlPura}/marca`, '#datalistMarca','#marcaId','nome');
+    desenharOpcoesDatalist(`${urlPura}/porte`, '#datalistPorte','#porteId','descricao');
+    desenharOpcoesDatalist(`${urlPura}/idade`, '#datalistIdade','#idadeId','descricao');
+    desenharOpcoesDatalist(`${urlPura}/tipo-produto`, '#datalistTipoProduto','#tipoProdutoId','descricao');
+}
+
+
+
 
 
 
@@ -148,21 +203,6 @@ function renderizarBotoes(idProduto) {
     return div;
 }
 
-
-function setValueAndTriggerChange(selector, dataId, dataText) {
-    const element = document.querySelector(selector);
-    if (!element) return;
-
-    let option = Array.from(element.options).find(opt => opt.value == dataId);
-    if (!option) {
-        option = document.createElement("option");
-        option.value = dataId;
-        option.text = dataText;
-        element.appendChild(option);
-    }
-    element.value = dataId;
-}
-
 function abrirModal(modal){
     modal.show();
 }
@@ -171,19 +211,28 @@ function fecharModal(modal){
 }
 
 function abrirModalAlteração(productId) {
+    const botaoSalvar = document.querySelector('#salvarAlteracaoBtn');
+    botaoSalvar.dataset.productId = productId;
     fetch(`${apiUrl}/${productId}`)
         .then(response => response.json())
         .then(data => {
-            ["nome", "peso", "preco_custo", "porcentagem_saco", "porcentagem_varejo", "sabor", "preco_saco", "preco_quilo", "codigoBarras"].forEach(id => {
-                document.getElementById(id).value = data[id];
-            });
-            setValueAndTriggerChange("#animalSelect", data.animal.id, data.animal.nome);
-            setValueAndTriggerChange("#fornecedorSelect", data.fornecedor.id, data.fornecedor.nome);
-            setValueAndTriggerChange("#idadeSelect", data.idade.id, data.idade.descricao);
-            setValueAndTriggerChange("#marcaSelect", data.marca.id, data.marca.nome);
-            setValueAndTriggerChange("#porteSelect", data.porte.id, data.porte.descricao);
-            setValueAndTriggerChange("#tipoProdutoSelect", data.tipoProduto.id, data.tipoProduto.descricao);
-            document.getElementById("salvarAlteracaoBtn").dataset.productId = productId;
+            desenharTodasOpcoesDatalist();
+            //document.getElementById("id").value = data.id;
+            document.getElementById("nome").value = data.nome;
+            document.getElementById("peso").value = data.peso;
+            document.getElementById("sabor").value = data.sabor;
+            document.getElementById("preco_custo").value = data.preco_custo;
+            document.getElementById("preco_saco").value = data.preco_saco;
+            document.getElementById("preco_quilo").value = data.preco_quilo;
+            document.getElementById("porcentagem_saco").value = data.porcentagem_saco;
+            document.getElementById("porcentagem_varejo").value = data.porcentagem_varejo;
+            document.getElementById("codigoBarras").value = data.codigoBarras;
+            document.getElementById("animalInput").value = data.animal.nome;
+            document.getElementById("fornecedorInput").value = data.fornecedor.nome;
+            document.getElementById("idadeInput").value = data.idade.descricao;
+            document.getElementById("marcaInput").value = data.marca.nome;
+            document.getElementById("porteInput").value = data.porte.descricao;
+            document.getElementById("tipoProdutoInput").value = data.tipoProduto.descricao;
             abrirModal(meuModalAlterar);
         })
         .catch(error => console.error("Erro durante a solicitação:", error));
@@ -197,27 +246,6 @@ function deleteProduct(productId) {
             .catch(error => console.error("Falha na solicitação Ajax:", error));
         fecharModal(meuModalExcluir);
     };
-}
-
-function initializeSelect2(selector, url, textField, minimumInputLength) {
-    const element = document.querySelector(selector);
-    if (!element) return;
-
-    element.addEventListener("input", function (event) {
-        const term = event.target.value;
-        fetch(term ? `${url}/nome/${encodeURIComponent(term)}` : url)
-            .then(response => response.json())
-            .then(data => {
-                element.innerHTML = ""; // Limpa opções anteriores
-                data.forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item.id;
-                    option.text = item[textField];
-                    element.appendChild(option);
-                });
-            })
-            .catch(error => console.error("Falha na solicitação Ajax:", error));
-    });
 }
 
 function calcularPrecosComPorcentagem() {

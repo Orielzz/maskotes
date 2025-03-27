@@ -1,4 +1,4 @@
-const apiUrl = "http://192.168.1.229:8080/produto";
+const apiUrl = "http://192.168.1.108:8080/produto";
 document.addEventListener('DOMContentLoaded', function() {
 
   const table = criarTabela();    

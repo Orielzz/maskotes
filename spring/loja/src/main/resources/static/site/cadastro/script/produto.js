@@ -125,7 +125,7 @@ function isEmpty(object){
 function insere() {
     // const barras = document.getElementById('codigoBarras').value;
     // console.log(barras);
-    // const uri =  "http://192.168.1.229:8080/produto/codigo/"+barras;
+    // const uri =  "http://192.168.1.108:8080/produto/codigo/"+barras;
     // fetch(uri, {
     //     method: "GET",
     //     headers: {
@@ -153,7 +153,7 @@ function insere() {
     // });
 
 
-  const url = "http://192.168.1.229:8080/produto";
+  const url = "http://192.168.1.108:8080/produto";
   const data = prepareJson('#produtoForm');
 
   makeAjaxRequest(url, 'POST', data, function(data) {
@@ -173,12 +173,12 @@ function insere() {
 }
 
 // Configurações para Select2 para cada campo
-initializeSelect2('#animalSelect', 'http://192.168.1.229:8080/animal', 'nome', 0);
-initializeSelect2('#fornecedorSelect', 'http://192.168.1.229:8080/fornecedor', 'nome', 0);
-initializeSelect2('#idadeSelect', 'http://192.168.1.229:8080/idade', 'descricao', 0);
-initializeSelect2('#marcaSelect', 'http://192.168.1.229:8080/marca', 'nome', 0);
-initializeSelect2('#porteSelect', 'http://192.168.1.229:8080/porte', 'descricao', 0);
-initializeSelect2('#tipoProdutoSelect', 'http://192.168.1.229:8080/tipo-produto', 'descricao', 0);
+initializeSelect2('#animalSelect', 'http://192.168.1.108:8080/animal', 'nome', 0);
+initializeSelect2('#fornecedorSelect', 'http://192.168.1.108:8080/fornecedor', 'nome', 0);
+initializeSelect2('#idadeSelect', 'http://192.168.1.108:8080/idade', 'descricao', 0);
+initializeSelect2('#marcaSelect', 'http://192.168.1.108:8080/marca', 'nome', 0);
+initializeSelect2('#porteSelect', 'http://192.168.1.108:8080/porte', 'descricao', 0);
+initializeSelect2('#tipoProdutoSelect', 'http://192.168.1.108:8080/tipo-produto', 'descricao', 0);
 
 // Adiciona o ouvinte de evento para o formulário
 document.getElementById("produtoForm").addEventListener('submit', handleFormSubmission);

@@ -2,7 +2,7 @@ let produtos = []; // Variável global para armazenar dados dos produtos
 
 // Função para buscar e preencher os dados na tabela
 function carregarEstoque() {
-    fetch('http://192.168.1.229:8080/estoque')
+    fetch('http://192.168.1.108:8080/estoque')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
@@ -56,7 +56,7 @@ function confirmarAlteracao(id) {
     const produto = produtos.find(p => p.id === id);
     if (produto) {
         // Envia a alteração para o servidor
-        makeAjaxRequest(`http://192.168.1.229:8080/estoque/${id}`, 'PUT', produto, criaMsgSucesso, criaMsgErro);
+        makeAjaxRequest(`http://192.168.1.108:8080/estoque/${id}`, 'PUT', produto, criaMsgSucesso, criaMsgErro);
     }
 }
 

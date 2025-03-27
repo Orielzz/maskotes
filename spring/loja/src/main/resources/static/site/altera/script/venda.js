@@ -4,7 +4,7 @@ let vendas = [];
 
 
 function carregarVendas(dataInicio, dataFim) {
-    fetch(`http://192.168.1.229:8080/venda/between?inicio=${dataInicio}&fim=${dataFim}`)
+    fetch(`http://192.168.1.108:8080/venda/between?inicio=${dataInicio}&fim=${dataFim}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
@@ -145,7 +145,7 @@ function name(params) {
 }
 
 function buscaProdutosVendidos(idVenda) {
-    fetch(`http://192.168.1.229:8080/produto-vendido/venda/${idVenda}`)
+    fetch(`http://192.168.1.108:8080/produto-vendido/venda/${idVenda}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);

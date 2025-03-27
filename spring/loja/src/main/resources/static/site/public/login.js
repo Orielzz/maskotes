@@ -5,7 +5,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
   const password = document.getElementById("password").value;
   const basicAuth = 'Basic ' + btoa(username + ':' + password);
 
-  fetch('http://192.168.1.229:8080/usuarios', {
+  fetch('http://192.168.1.108:8080/usuarios', {
       method: 'GET', // ou 'POST', 'PUT', etc., dependendo do método que você precisa
       headers: {
           'Authorization': basicAuth

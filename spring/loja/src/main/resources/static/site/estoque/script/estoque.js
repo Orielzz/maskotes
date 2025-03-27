@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar o Select2
-    const url = "http://192.168.1.229:8080/produto";
+    const url = "http://192.168.1.108:8080/produto";
 
     initializeSelect2("#productSearch", url, "nome", "sabor", "porte", 0);
 
@@ -164,13 +164,13 @@ function adicionaEstoque(data){
         }
     };
     
-    makeAjaxRequest('http://192.168.1.229:8080/estoque','POST',preparajson,criaMsgSucesso,criaMsgErro)
+    makeAjaxRequest('http://192.168.1.108:8080/estoque','POST',preparajson,criaMsgSucesso,criaMsgErro)
     return
 }
 
 function verificaEstocado(data) {
     return makeAjaxRequest(
-        `http://192.168.1.229:8080/estoque/produto/${data.id}`,
+        `http://192.168.1.108:8080/estoque/produto/${data.id}`,
         'GET',
         null,
         (json) => json.id, // Success callback that returns the id
@@ -203,7 +203,7 @@ function atualizaEstoque(data) {
 
 
             return makeAjaxRequest(
-                `http://192.168.1.229:8080/estoque/${id}`,
+                `http://192.168.1.108:8080/estoque/${id}`,
                 'PUT',
                 preparajson,
                 (json) => {
@@ -227,7 +227,7 @@ function atualizaEstoque(data) {
 
     
 function buscaProduto(productId) {
-    return fetch(`http://192.168.1.229:8080/produto/${productId}`)
+    return fetch(`http://192.168.1.108:8080/produto/${productId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na solicitação: ${response.status}`);
@@ -236,7 +236,7 @@ function buscaProduto(productId) {
         });
 }
 function buscaEstoque(productId,data ,adicionaCallback, atualizaCallback, errorCallback) {
-    return fetch(`http://192.168.1.229:8080/estoque/produto/${productId}`)
+    return fetch(`http://192.168.1.108:8080/estoque/produto/${productId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na solicitação: ${response.status}`);

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // URL da API
-    const apiUrl = "http://192.168.1.229:8080/tipo-produto";
+    const apiUrl = "http://192.168.1.108:8080/tipo-produto";
     
     // Manipulador de evento para alteração no campo de pesquisa
     $("#searchInput").on("input", function() {
